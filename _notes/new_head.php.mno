@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_r_vou_hd" value="name:vou_hd_id;datatype:int,name:vou_head;datatype:blob" />
+</info>

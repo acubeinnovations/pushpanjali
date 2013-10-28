@@ -1,0 +1,38 @@
+#calendar-header { background-color: #FFFFFF; padding-top: 2px; margin: auto; width:100%;  font-size: 10px; font-family: Arial, Helvetica, sans-serif;  }
+#calendar-header .closeme { padding: 0px 3px 2px 0px; text-decoration : none; font-size: 10px; font-family: Arial, Helvetica, sans-serif; }
+
+#calendar-body { background-color: #FFFFFF; margin: auto; width: 100%; font-size: 10px; font-family: Arial, Helvetica, sans-serif; }
+#calendar-body .general { background-color: #FFFFFF; font-size: 10px; font-family: Arial, Helvetica, sans-serif;  }
+#calendar-body .othermonth { background-color: #EEEEEE; color: #AAAAAA;   font-size: 10px; font-family: Arial, Helvetica, sans-serif;  }
+#calendar-body .header { background-color: #6699CC; color: #FFFFFF;  font-size: 10px; font-family: Arial, Helvetica, sans-serif;  }
+#calendar-body .today { background-color: #FFFFCC; font-size: 11px; }
+#calendar-body .bg { background-color: #6699CC; padding:2px; }
+#calendar-body .select { background-color: #FFCC99; }
+#calendar-body .othermonth a:link { text-decoration : none; font-family: Arial, Helvetica, sans-serif; color: #CCFFCC; }
+#calendar-body .othermonth a:visited { text-decoration : none; font-family: Arial, Helvetica, sans-serif; color: #CCFFCC; }
+#calendar-body .othermonth a:hover { text-decoration : underline; font-family: Arial, Helvetica, sans-serif; color: #FFFFFF; }
+#calendar-body a:link { text-decoration : none; font-family:Arial, Helvetica, sans-serif; color: #000000; }
+#calendar-body a:visited { text-decoration : none; font-family: Arial, Helvetica, sans-serif; color: #000000; }
+#calendar-body a:hover { text-decoration : underline; font-family: Arial, Helvetica, sans-serif; color: #FF0000; }
+#calendar-body .disabledate { color: #669999; }
+
+#calendar-body .refresh { color: #FFF; padding: 10px 3px 3px; }
+#calendar-body .refresh .txt-container { padding: 25px 10px 10px; height: 50px; }
+
+#calendar-footer { background-color: #CCCCCC; border: 0px solid #000000; }
+#calendar-footer .btn { line-height: 15px; }
+#calendar-footer .btn a:link { text-decoration : none; font-family: Arial, Helvetica, sans-serif; color: #000000; }
+#calendar-footer .btn a:visited { text-decoration : none; font-family: Arial, Helvetica, sans-serif; color: #000000; }
+#calendar-footer .btn a:hover { text-decoration : underline; font-family: Arial, Helvetica, sans-serif; color: #FF0000; }
+
+#calendar-header, #calendar-body, #calendar-footer { padding-left: 0px; padding-right: 2px; }
+#calendar-container { background-color: #CCCCCC;}
+
+.tcday, .tcmonth, .tcyear { font-size: 10px;}
+
+.date-tccontainer { border: 1px solid #cccccc; background-color: #efefef; padding: 2px; }
+
+#calendar-page { float: left; background-color: #FFFFFF; font-size:10px;}
+.div_calendar { width: 200px; height: 200px; background-color: #6699CC; }
+.calendar-border { border: 1px solid #000; }
+.selectors {font-size:10px; font-family:Arial, Helvetica, sans-serif}

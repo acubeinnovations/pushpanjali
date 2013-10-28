@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_r_report" value="name:pooja;datatype:string" />
+	<infoitem key="UD_r_view_pooja" value="name:rate;datatype:int,name:bhogam_melsanthi;datatype:real,name:bhogam_kazakam;datatype:real,name:COUNT(vazhipadu.pooja);datatype:int" />
+</info>
