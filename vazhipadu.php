@@ -108,6 +108,7 @@ return($f_var_timestamp);
 -->
 </style>
 <title>Puthankavu Charaparambu Bhagavathi Kshetram</title>
+
 <script type="text/javascript">
 <!--
 function MM_openBrWindow(theURL,winName,features) { //v2.0
@@ -622,13 +623,25 @@ line-height:20px;
 </table>    
 </div>  
 
-<script type="text/javascript">
+
 <?php 
 if($v_print==1)
 { ?>
-window.print();
-<?php } ?>
+<script language="VBScript">
+	sub Print()
+		OLECMDID_PRINT = 6
+		OLECMDEXECOPT_DONTPROMPTUSER = 2
+		OLECMDEXECOPT_PROMPTUSER = 1
+		call WB.ExecWB(OLECMDID_PRINT, OLECMDEXECOPT_DONTPROMPTUSER,1)
+	End Sub
+	document.write "<object id='WB' width='0' height='0' classid='CLSID:8856F961-340A-11D0-A96B-00C04FD705A2'></object>"
 </script>
+<object id="WebBrowser1" width="0" height="0" classid="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"> </object>
+<script type="text/javascript">
+	Print();
+</script>
+<?php } ?>
+
 
 
 </body>
