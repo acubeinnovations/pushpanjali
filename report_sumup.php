@@ -216,7 +216,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
             <td width="113" height="15" align="right" valign="middle" class="style1" style="border-bottom:1px solid #999999;">
 			<?php 
 			mysql_select_db($database_pushpanjali, $pushpanjali);
-			$query_r_view_voucher = "SELECT SUM(amount) FROM voucher WHERE voucher_date='".$row_r_view_summary['date']."'";
+			$query_r_view_voucher = "SELECT SUM(amount) FROM voucher WHERE voucher_date='".$row_r_view_summary['date']."' AND status='0'";
 			$r_view_voucher = mysql_query($query_r_view_voucher, $pushpanjali) or die(mysql_error());
 			$row_r_view_voucher = mysql_fetch_assoc($r_view_voucher);
 			$totalRows_r_view_voucher = mysql_num_rows($r_view_voucher);?>0.00&nbsp;&nbsp;&nbsp;&nbsp;</td>
