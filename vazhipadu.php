@@ -1,6 +1,7 @@
-<?php header('Content-type: text/html; charset=utf-8');
+<?php 
+header('Content-type: text/html; charset=utf-8');
 require_once('Connections/pushpanjali.php'); 
-  require_once('calendar/classes/tc_calendar.php');
+require_once('calendar/classes/tc_calendar.php');
 
  $v_print=0;
  $v_numbr=1;
@@ -29,26 +30,15 @@ $totalRows_r_view_star = mysql_num_rows($r_view_star);
 	 date_default_timezone_set("Asia/Calcutta");
   //INSERT Operation
    $date=date('Y-m-d');
-   if(isset($_POST['booking']))
-   {
-   if($_POST['booking']==1)
-   {
-   $v_book_date=$_POST['bck_date'];
-   }
-    if($_POST['booking']==1)
-   {
-	  $v_book_to=$_POST['bck_to_date'];
-	  $datetime1 = new DateTime($v_book_date);
-	  $datetime2 = new DateTime($v_book_to);
-	  $interval = $datetime1->diff($datetime2);
-	  $v_numb= $interval->format('%a');
-	  $v_numbr=$v_numb+1;
-		//echo $v_numbr;
-   }
-   }else
-   {
-   $v_book_date=NULL;
-   $v_book_to="";
+   if(isset($_POST['booking'])){
+	   if($_POST['booking']==1){
+			$v_book_date=$_POST['bck_date'];
+			$v_book_to =$_POST['bck_date'];
+	   }
+    
+   }else{
+		$v_book_date=NULL;
+		$v_book_to = NULL;
    }
    	if($_POST['pooja']!=0 && $_POST['amount']!="")
 	{
@@ -57,7 +47,7 @@ $totalRows_r_view_star = mysql_num_rows($r_view_star);
 	$v_name=$_POST['name'];
 	$v_star=$_POST['star'];	
 	$v_amount=$_POST['amount'];
-	$v_total_amt=$v_amount*$v_numbr;
+	$v_total_amt=$v_amount;
   $insertSQL = "INSERT INTO vazhipadu (name, star, amount, quantity, pooja, vazhipadu_date,booking_date,booking_to,receipt_number) VALUES" ;
   $v_q_string=array();
   for($i=0;$i<count($v_name);$i++)
@@ -96,6 +86,15 @@ $totalRows_r_view_star = mysql_num_rows($r_view_star);
 	 header("Location:vazhipadu.php?emsg=Selelct pooja");
 	 }  
  	}
+	
+function echotomysql($f_MySqlDate2){
+$f_date_array = explode("-",$f_MySqlDate2); 
+$f_var_day = $f_date_array[0];
+$f_var_month = $f_date_array[1];
+$f_var_year = $f_date_array[2];
+$f_var_timestamp =$f_var_year.'-'.$f_var_month.'-'.$f_var_day ;
+return($f_var_timestamp);
+}	
   ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -125,7 +124,10 @@ if(document.getElementById("amount").value=="")
                 document.getElementById("error1").innerHTML="select pooja !";
                 return false;
               }
-			 
+			 else
+			  {
+			  document.getElementById("error1").innerHTML="";
+              }
 if(document.getElementById("name1").value=="")
 
               {
@@ -134,7 +136,11 @@ if(document.getElementById("name1").value=="")
                 document.getElementById("name1").focus();
                 return false;
               }
-if(document.getElementById("star").value=="")
+			  else
+			  {
+			  document.getElementById("error2").innerHTML="";
+              }
+if(document.getElementById("star").value=="0")
 
               {
 			 
@@ -146,15 +152,7 @@ if(document.getElementById("star").value=="")
 		   
 }
 </script>
-<script type="text/javascript">     
-        function PrintDiv() {    
-           var divToPrint = document.getElementById('divToPrint');
-           var popupWin = window.open('', '_blank', 'width=770,height=400');
-           popupWin.document.open();
-           popupWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML + '</html>');
-            popupWin.document.close();
-                }
-</script>
+
 <script type="text/javascript">
 var XMLHttpRequestObject = false; 
 
@@ -237,17 +235,34 @@ document.getElementById("div1").style.display = "none";
 .style11 {font-size: 14px}
 -->
 </style>
+
+<style type="text/css" media="screen">
+
+  #divToPrint{
+    display:none;
+  }
+  
+</style>
+
+<style type="text/css" media="print">
+
+  #divnoprint{
+    display:none;
+  }
+
+</style>
+
+
+
 </head>
-<?php 
-if($v_print==1)
-{ ?>
-<body onLoad="PrintDiv()">
-<?php } else { ?>
+
 <body marginheight="0" marginwidth="0" topmargin="0" bottommargin="0" rightmargin="0" leftmargin="0">
-<?php }?>
+
+<div id="divnoprint" >
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td height="53" align="left" valign="top" background="images/bg.PNG"><table width="845" border="0" align="left" cellpadding="0" cellspacing="1">
+    <td height="53" align="left" valign="top" background="images/bg.PNG">
+    <table width="845" border="0" align="left" cellpadding="0" cellspacing="1">
       <tr class="menu">
         <td width="84" height="41" align="center" valign="middle"><a href="home.php" class="menu">Home</a></td>
         <td width="83" height="41" align="center" valign="middle"><a href="star.php" class="menu">Star</a></td>
@@ -303,14 +318,12 @@ if($v_print==1)
 					  $row_r_select_pooja = mysql_fetch_assoc($r_select_pooja);
 				  }
 				?>
-              </select>
-             </td>
+              </select>             </td>
               <td width="147" height="30" align="left" valign="middle" class="style1"><span class="error" id="error1"></span></td>
               <td width="91" align="left" valign="middle" class="style1">Booking</td>
-              <td width="174" align="left" valign="middle" class="style1">
-              <input name="booking" type="checkbox" id="booking"  onclick="showMe();" value="1" />               
-              </td>
-              <td width="91" align="left" valign="middle" class="style1">&nbsp;</td>
+              <td width="90" align="left" valign="middle" class="style1">
+              <input name="booking" type="checkbox" id="booking"  onclick="showMe();" value="1" />              </td>
+              <td width="175" align="left" valign="middle" class="style1">&nbsp;</td>
             </tr>
             <tr>
               <td width="48" height="30" align="left" valign="middle">&nbsp;</td>
@@ -321,7 +334,7 @@ if($v_print==1)
               <td width="147" height="30" align="left" valign="middle" class="style1">&nbsp;</td>
               <td width="91" align="left" valign="middle" class="style1">തീയതി</td>
               <td colspan="2" align="left" valign="middle" class="style1"><label>
-              <div id="div1" style="display:none">From &nbsp;&nbsp;&nbsp;<?php
+              <div id="div1" style="display:none"><?php
 			  $myCalendar = new tc_calendar("bck_date", true, false);
 			  $myCalendar->setIcon("calendar/images/iconCalendar.gif");
 			  $myCalendar->setDate(date('d'), date('m'), date('Y'));
@@ -331,21 +344,10 @@ if($v_print==1)
 			  $myCalendar->setDateFormat('j F Y');
 			  $myCalendar->writeScript();
 		  ?></br><br />
-
-          To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php
-			  $myCalendar = new tc_calendar("bck_to_date", true, false);
-			  $myCalendar->setIcon("calendar/images/iconCalendar.gif");
-			  $myCalendar->setDate(date('d'), date('m'), date('Y'));
-			  $myCalendar->setPath("calendar/");
-			  $myCalendar->setYearInterval(date('Y'), 2020);
-			  $myCalendar->dateAllow(date('Y-m-d'), '2015-03-01');
-			  $myCalendar->setDateFormat('j F Y');
-			  $myCalendar->writeScript();
-		  ?><br />
-
           </div>
-         </label> <div id="div2" >
-                <input name="date" type="text" id="date" value="<?php echo date("Y-m-d"); ?>" size="10" readonly="readonly" />
+         </label><div id="div2" >
+         <?php echo date("d-m-Y"); ?>
+                <input name="date" type="hidden" id="date" value="<?php echo date("Y-m-d"); ?>" size="10" readonly="readonly" />
                 </div></td>
               </tr>
             <tr>
@@ -356,54 +358,95 @@ if($v_print==1)
                 </label>                </td>
               <td width="147" height="30" align="left" valign="middle" class="style1"><span class="error" id="error2"></span></td>
               <td width="91" align="left" valign="middle" class="style1">നക്ഷത്രം</td>
-              <td width="174" align="left" valign="middle" class="style1"><div class="redletter" id="star1" name="star1">
-            <input type="text" name="star[]" id="star" value="" tabindex="3" onChange="loadtodiv(event,'load_star.php','star1')"/>
-        </div></td>
-              <td width="91" align="left" valign="middle" class="style1"><span class="error" id="error3"></span></td>
+              <td align="left" valign="middle" class="style1"><select name="star[]" id="star" tabindex="3">
+                <option value="0">Select</option>
+                <?php
+				do {  
+				?>
+                <option value="<?php echo $row_r_view_star['id']?>"><?php echo $row_r_view_star['starname']?></option>
+                <?php
+				} while ($row_r_view_star = mysql_fetch_assoc($r_view_star));
+				  $rows = mysql_num_rows($r_view_star);
+				  if($rows > 0) {
+					  mysql_data_seek($r_view_star, 0);
+					  $row_r_view_star = mysql_fetch_assoc($r_view_star);
+				  }
+				?>
+              </select></td>
+              <td align="left" valign="middle" class="style1"><span class="error" id="error3"></span></td>
             </tr>
             <tr>
               <td height="30" align="left" valign="middle">&nbsp;</td>
               <td height="30" align="left" valign="middle" class="style1">പേര്</td>
               <td height="30" align="left" valign="middle" class="style1"><label>
                 <input name="name[]" type="text" class="pus" id="name[]" size="25" tabindex="4"/>
-              </label>
-                </td>
+              </label>                </td>
               <td height="30" align="left" valign="middle" class="style1">&nbsp;</td>
               <td align="left" valign="middle" class="style1">നക്ഷത്രം</td>
-              <td align="left" valign="middle" class="style1"><div class="redletter" id="star2" name="star2">
-            <input type="text" name="star[]" id="star2" value="" onChange="loadtodiv(event,'load_star.php','star2')" tabindex="5"/>
-        </div></td>
-              <td align="left" valign="middle" class="style1">&nbsp;</td>
-            </tr>
+              <td colspan="2" align="left" valign="middle" class="style1"><select name="star[]" id="star[]" tabindex="5">
+                <option value="0">Select</option>
+                <?php
+				do {  
+				?>
+                <option value="<?php echo $row_r_view_star['id']?>"><?php echo $row_r_view_star['starname']?></option>
+                <?php
+				} while ($row_r_view_star = mysql_fetch_assoc($r_view_star));
+				  $rows = mysql_num_rows($r_view_star);
+				  if($rows > 0) {
+					  mysql_data_seek($r_view_star, 0);
+					  $row_r_view_star = mysql_fetch_assoc($r_view_star);
+				  }
+				?>
+              </select></td>
+              </tr>
             <tr>
               <td height="30" align="left" valign="middle">&nbsp;</td>
               <td height="30" align="left" valign="middle" class="style1">പേര്</td>
               <td height="30" align="left" valign="middle" class="style1"><label>
                 <input name="name[]" type="text" class="pus" id="name[]" size="25" tabindex="6"/>
-              </label>
-                </td>
+              </label>                </td>
               <td width="147" height="30" align="left" valign="middle" class="style1">&nbsp;</td>
               <td width="91" align="left" valign="middle" class="style1">നക്ഷത്രം</td>
-              <td width="174" align="left" valign="middle" class="style1"><div class="redletter" id="star3" name="star3">
-            <input type="text" name="star[]" id="star3" value="" onChange="loadtodiv(event,'load_star.php','star3')" tabindex="7"/>
-        </div></td>
-              <td align="left" valign="middle" class="style1">&nbsp;</td>
-            </tr>
+              <td colspan="2" align="left" valign="middle" class="style1"><select name="star[]" id="star[]" tabindex="7">
+                <option value="0">Select</option>
+                <?php
+				do {  
+				?>
+                <option value="<?php echo $row_r_view_star['id']?>"><?php echo $row_r_view_star['starname']?></option>
+                <?php
+				} while ($row_r_view_star = mysql_fetch_assoc($r_view_star));
+				  $rows = mysql_num_rows($r_view_star);
+				  if($rows > 0) {
+					  mysql_data_seek($r_view_star, 0);
+					  $row_r_view_star = mysql_fetch_assoc($r_view_star);
+				  }
+				?>
+              </select></td>
+              </tr>
             <tr>
               <td height="30" align="left" valign="middle">&nbsp;</td>
               <td height="30" align="left" valign="middle" class="style1">പേര്</td>
               <td height="30" align="left" valign="middle" class="style1"><label>
                 <input name="name[]" type="text" class="pus" id="name[]" size="25" tabindex="8"/>
-              </label>
-               </td>
+              </label>               </td>
               <td height="30" align="left" valign="middle" class="style1">&nbsp;</td>
               <td align="left" valign="middle" class="style1">നക്ഷത്രം</td>
-              <td align="left" valign="middle" class="style1"><div class="redletter" id="star4" name="star4">
-            <input type="text" name="star[]" id="star4" value="" onChange="loadtodiv(event,'load_star.php','star4')" tabindex="9"/>
-        </div>
-</td>
-              <td align="left" valign="middle" class="style1">&nbsp;</td>
-            </tr>
+              <td colspan="2" align="left" valign="middle" class="style1"><select name="star[]" id="star[]" tabindex="9">
+                <option value="0">Select</option>
+                <?php
+				do {  
+				?>
+                <option value="<?php echo $row_r_view_star['id']?>"><?php echo $row_r_view_star['starname']?></option>
+                <?php
+				} while ($row_r_view_star = mysql_fetch_assoc($r_view_star));
+				  $rows = mysql_num_rows($r_view_star);
+				  if($rows > 0) {
+					  mysql_data_seek($r_view_star, 0);
+					  $row_r_view_star = mysql_fetch_assoc($r_view_star);
+				  }
+				?>
+              </select></td>
+              </tr>
             <tr>
               <td width="48" height="60" align="left" valign="middle"></td>
               <td height="30" align="left" valign="middle" class="style11"></td>
@@ -412,8 +455,8 @@ if($v_print==1)
                 </label></td>
               <td width="147" height="30" align="left" valign="middle" class="style11">&nbsp;</td>
               <td width="91" align="left" valign="middle" class="style11">&nbsp;</td>
-              <td width="174" align="left" valign="middle" class="style11">&nbsp;</td>
-              <td width="91" align="left" valign="middle" class="style11">&nbsp;</td>
+              <td width="90" align="left" valign="middle" class="style11">&nbsp;</td>
+              <td width="175" align="left" valign="middle" class="style11">&nbsp;</td>
             </tr>
           </table>
       
@@ -426,67 +469,13 @@ if($v_print==1)
    
     </td>
     <td align="right" valign="top" bgcolor="#FFFFFF">
-     <div id="divToPrint" style="display:none" >
-     <style type="text/css">
-		.style1 {font-size: 12px}
-	</style>
-     <table width="750" border="0" align="center" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
-      <tr>
-        <td align="left">&nbsp;</td>
-        <td height="40" align="left"><span class="style1"><strong>പൂജ : </strong>          
-          <?php if (isset($_REQUEST['pooja'])) {$v_pooja_id=$_REQUEST['pooja'];include('inc_pooja.php'); 
-		  echo $v_pooja_name;
-} ?>        
-        </span></td>
-        <td height="40" colspan="2" align="right"><span class="style1">തീയതി : 
-          <?php if (isset($_REQUEST['pooja'])) {echo $_POST['date'];}?>        
-        </span></td>
-        <td align="right">&nbsp;</td>
-        </tr>
-      <tr>
-        <td width="17" align="left" bgcolor="#F4F4F4">&nbsp;</td>
-        <td width="399" height="40" align="left" bgcolor="#F4F4F4"><span class="style1"><strong>പേര്</strong></span></td>
-        <td width="174" height="40" bgcolor="#F4F4F4"><span class="style1"><strong>നക്ഷത്രം </strong></span></td><td width="95" bgcolor="#F4F4F4"><span class="style1 style6 style11"><strong>രൂപ</strong></span></td>
-        <td width="74" bgcolor="#F4F4F4"><span class="style6 style11">എണ്ണം</span></td>
-        <td width="102" bgcolor="#F4F4F4"><span class="style6 style11">അകെ</span></td>
-        <td width="23" bgcolor="#F4F4F4">&nbsp;</td>
-        </tr>
-        <?php $v_total_amount=array(); for($i=0;$i<count($v_name);$i++)
-	{
-	if($v_name[$i]!="" && $v_star[$i]!="")
-	{ ?>
-      <tr>
-        <td align="left">&nbsp;</td>
-        <td height="40" align="left"><span class="style1"><strong>
-          <?php if (isset($_REQUEST['name'])) {echo $v_name[$i];}?>
-        </strong></span></td>
-        <td height="40">
-          <span class="style1">
-          <?php if (isset($_REQUEST['pooja'])) {include('inc_star_name.php'); echo $v_starname; }?>        
-          </span></td>
-          <td>         <span class="style1">
-          <?php if (isset($_REQUEST['amount'])) {echo $_REQUEST['amount']; $v_total_amount[]=$v_total_amt;} ?>        
-          </span></td>
-        <td><?php echo $v_numbr; ?>&nbsp;</td>
-        <td><?php echo $v_total_amt; ?>&nbsp;</td>
-        <td>&nbsp;</td>
-        </tr><?php }}?>
-      <?php if (isset($_REQUEST['name'])) {?><tr>
-        <td align="left" bgcolor="#F4F4F4">&nbsp;</td>
-        <td height="40" align="left" bgcolor="#F4F4F4">&nbsp;</td>
-        <td height="40" bgcolor="#F4F4F4" class="style1"><strong>Total</strong></td>
-        <td colspan="3" align="right" valign="middle" bgcolor="#F4F4F4"><?php  echo array_sum($v_total_amount); ?>&nbsp;</td>
-        <td bgcolor="#F4F4F4">&nbsp;</td>
-      </tr>
-      <?php }?>
-    </table>
-    </div>
-      </td>
+
+    </td>
   </tr>
   <tr>
     <td align="right" valign="top">
     <br />
-    <?php if (isset($_REQUEST['pooja'])) { ?>
+    <?php if (isset($_REQUEST['poojas'])) { ?>
      <div class="overflow_scroll" style="width:850px" id="report_div" >
     <table width="830" border="0" align="right" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
       <tr>
@@ -532,7 +521,7 @@ echo $v_starname; }?>
       <tr>
         <td align="left" bgcolor="#F4F4F4">&nbsp;</td>
         <td height="40" align="left" bgcolor="#F4F4F4">&nbsp;</td>
-        <td height="40" bgcolor="#F4F4F4" class="style1"><strong>Totalll</strong></td>
+        <td height="40" bgcolor="#F4F4F4" class="style1"><strong>Total</strong></td>
         <td colspan="3" align="right" valign="middle" bgcolor="#F4F4F4"><?php if (isset($_REQUEST['name'])) { echo array_sum($v_total_amount); }?>&nbsp;</td>
         <td bgcolor="#F4F4F4">&nbsp;</td>
       </tr>
@@ -553,7 +542,7 @@ echo $v_starname; }?>
       </tr>
     </table>
     </div>
-    <?php } ?>
+    <?php  } ?>
     </td>
     <td align="right" valign="top" bgcolor="#FFFFFF">&nbsp;</td>
   </tr>
@@ -563,6 +552,85 @@ echo $v_starname; }?>
 <!--<div align="center" style="display: block; position:absolute; text-align:center; bottom: 0; width: 100.00%; color: #CCC; clear: both; height:40px; background-repeat: repeat-x; border-right-width: 100px;  background-color:#333333; filter:alpha(opacity=75); opacity:0.90;"><br />
 <span class="footer">All rights reserved. ® Acube Innovations Pvt Ltd. Phone: 0484 6066060.  Copyright © 2013. </span></div>-->
     
+</div>
+
+
+
+<div id="divToPrint" >
+   
+     <style type="text/css">
+.letter {
+font-family:"kartika";
+font-size:8px;
+letter-spacing:5px;
+line-height:20px;
+}
+@font-face
+{
+font-family: "kartika";
+src: url('fonts/kartika.ttf');
+}
+.english
+{
+font-family:"Arial";
+font-size:7px;
+letter-spacing:5px;
+line-height:20px;
+}
+  </style>
+<table width="500" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="275" height="110">&nbsp;</td>
+    <td width="125">&nbsp;</td>
+    <td width="100">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="400"  colspan="2" height="65" align="left" valign="middle" class="letter"> &nbsp;&nbsp;&nbsp;
+  <?php if (isset($_REQUEST['pooja'])) {$v_pooja_id=$_REQUEST['pooja'];include('inc_pooja.php');  echo $v_pooja_name; } ?>        </td>
+    
+    <td width="100" height="65" class="english" align="left" valign="middle"><?php if (isset($_REQUEST['pooja'])) {echo echotomysql($_POST['date']);}?>
+  </br></br><?php echo $v_receipt_no; ?></td>
+  </tr>
+  <tr>
+    <td height="120" colspan="3" align="left" valign="top">
+    <table width="500" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+    <td width="275" height="25" align="left" valign="middle" class="letter">&nbsp;</td>
+    <td width="125" height="25" align="left" valign="middle" class="letter">&nbsp;</td>
+    <td width="100" height="25" align="middle" valign="middle" class="letter">&nbsp;</td>
+  </tr>
+  <?php $v_total_amount=array(); 
+   for($i=0;$i<count($v_name);$i++)
+  {
+  if($v_name[$i]!="" && $v_star[$i]!="")
+  { ?>
+    <tr>
+    <td width="275" height="15" align="left" valign="middle" class="letter"><?php if (isset($_REQUEST['name'])) {echo $v_name[$i];}?></td>
+    <td width="125" height="15" align="left" valign="middle" class="letter"><?php if (isset($_REQUEST['pooja'])) {include('inc_star_name.php'); echo $v_starname; }?> </td>
+    <td width="100" height="15" align="middle" valign="middle" class="english"><?php if (isset($_REQUEST['amount'])) {echo $_REQUEST['amount']; $v_total_amount[]=$v_total_amt;} ?></td>
+  </tr><?php }}?>
+</table>
+  </td>
+  </tr>
+<?php if (isset($_REQUEST['name'])) {?>
+  <tr>
+    <td height="80">&nbsp;</td>
+    <td height="80">&nbsp;</td>
+    <td height="80" align="middle" valign="bottom" class="english"><?php  echo array_sum($v_total_amount); ?></td>
+  </tr>
+  <?php }?>
+</table>    
+</div>  
+
+<script type="text/javascript">
+<?php 
+if($v_print==1)
+{ ?>
+window.print();
+<?php } ?>
+</script>
+
+
 </body>
 </html>
 <?php

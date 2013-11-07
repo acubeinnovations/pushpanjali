@@ -1,4 +1,3 @@
-
 <?php require_once('Connections/pushpanjali.php'); ?>
 <?php
 if (!function_exists("GetSQLValueString")) {
@@ -31,10 +30,14 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 
 mysql_select_db($database_pushpanjali, $pushpanjali);
-$query_r_view_inc_pooja = "SELECT pooja FROM pooja WHERE id='$v_pooja_id'";
+$query_r_view_inc_pooja = "SELECT pooja, rate, bhogam_melsanthi, bhogam_kazakam FROM pooja WHERE id='$v_pooja_id'";
 $r_view_inc_pooja = mysql_query($query_r_view_inc_pooja, $pushpanjali) or die(mysql_error());
 $row_r_view_inc_pooja = mysql_fetch_assoc($r_view_inc_pooja);
-$totalRows_r_view_inc_pooja = mysql_num_rows($r_view_inc_pooja);
+$totalRows_r_view_inc_pooja = mysql_num_rows($r_view_inc_pooja);?>
+<?php
 $v_pooja_name=$row_r_view_inc_pooja['pooja'];
+$v_pooja_rate=$row_r_view_inc_pooja['rate'];
+$v_pooja_bhogam_melsanthi=$row_r_view_inc_pooja['bhogam_melsanthi'];
+$v_pooja_bhogam_kazakam=$row_r_view_inc_pooja['bhogam_kazakam'];
 mysql_free_result($r_view_inc_pooja);
 ?>

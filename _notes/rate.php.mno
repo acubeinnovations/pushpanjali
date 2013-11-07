@@ -1,4 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<info>
-	<infoitem key="UD_r_view_rate" value="name:id;datatype:int,name:pooja;datatype:blob,name:rate;datatype:int,name:bhogam_melsanthi;datatype:real,name:bhogam_kazakam;datatype:real" />
-</info>

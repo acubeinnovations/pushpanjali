@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 28, 2013 at 11:04 AM
+-- Generation Time: Oct 26, 2013 at 10:51 AM
 -- Server version: 5.5.24-log
 -- PHP Version: 5.3.13
 
@@ -35,14 +35,7 @@ CREATE TABLE IF NOT EXISTS `master` (
   `dr` int(11) NOT NULL,
   `status` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `master`
---
-
-INSERT INTO `master` (`id`, `type`, `type_id`, `date`, `cr`, `dr`, `status`) VALUES
-(1, 'vazhipadu', 1, '2013-10-28', 12, 0, 0);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -78,17 +71,15 @@ CREATE TABLE IF NOT EXISTS `star` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `starname` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=31 ;
 
 --
 -- Dumping data for table `star`
 --
 
 INSERT INTO `star` (`id`, `starname`) VALUES
-(1, 'അത്തം'),
-(2, 'ചിത്തിര'),
-(3, 'ചോതി'),
-(4, 'വിശാകം');
+(29, 'ചിത്തിര'),
+(30, 'ഉത്രം');
 
 -- --------------------------------------------------------
 
@@ -101,22 +92,13 @@ CREATE TABLE IF NOT EXISTS `vazhipadu` (
   `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `star` int(11) NOT NULL,
   `amount` int(11) NOT NULL,
-  `quantity` int(11) DEFAULT NULL,
   `pooja` int(11) NOT NULL,
   `vazhipadu_date` date NOT NULL,
   `status` int(11) NOT NULL DEFAULT '0',
   `booking_date` date DEFAULT NULL,
-  `booking_to` date DEFAULT NULL,
   `receipt_number` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `vazhipadu`
---
-
-INSERT INTO `vazhipadu` (`id`, `name`, `star`, `amount`, `quantity`, `pooja`, `vazhipadu_date`, `status`, `booking_date`, `booking_to`, `receipt_number`) VALUES
-(1, 'ജിസ്മി', 1, 12, 1, 8, '2013-10-28', 0, '2013-10-30', '2013-10-30', 1);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 

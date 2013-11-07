@@ -1,4 +1,6 @@
-<?php require_once('Connections/pushpanjali.php'); ?>
+<?php 
+ header('Content-type: text/html; charset=utf-8');
+require_once('Connections/pushpanjali.php'); ?>
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 

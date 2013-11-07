@@ -1,6 +1,4 @@
-<?php 
-header('Content-type: text/html; charset=utf-8');
-require_once('Connections/pushpanjali.php'); 
+<?php require_once('Connections/pushpanjali.php'); ?><?php require_once('Connections/pushpanjali.php'); 
 require_once('calendar/classes/tc_calendar.php');?>
 <?php
 if (!function_exists("GetSQLValueString")) {
@@ -43,7 +41,7 @@ $v_to=date('Y-m-d');
 }
 mysql_query("SET NAMES utf8");
 mysql_select_db($database_pushpanjali, $pushpanjali);
-$query_r_report = "SELECT DISTINCT pooja FROM vazhipadu WHERE vazhipadu_date BETWEEN '$v_from' AND '$v_to' AND status='0' ";
+$query_r_report = "SELECT DISTINCT date FROM `master` WHERE date >='$v_from' AND date <='$v_to' AND status='0' ORDER BY date ASC";
 $r_report = mysql_query($query_r_report, $pushpanjali) or die(mysql_error());
 $row_r_report = mysql_fetch_assoc($r_report);
 $totalRows_r_report = mysql_num_rows($r_report);
@@ -87,6 +85,7 @@ body {
         <td width="93" height="41" align="center" valign="middle"><a href="vazhipadu.php" class="menu">Vazhipadu</a></td>
         <td width="91" height="41" align="center" valign="middle"><a href="voucher.php" class="menu">Vouchers</a></td>
         <td width="110" height="41" align="center" valign="middle"><a href="report.php" class="menu">Report</a></td>
+        <td width="130" align="center" valign="middle"><a href="report_summary.php" class="menu_active" >Report summary</a></td>
         <td width="126" height="41" align="center" valign="middle"><a href="logout.php" class="menu">Logout</a></td>
       </tr>
     </table></td>
@@ -94,7 +93,7 @@ body {
   <tr>
     <td height="400" align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td width="70%" height="600" align="left" valign="top" bgcolor="#CCCCCC">
+    <td width="70%" height="600" align="left" valign="top" >
    <table width="80%" border="0" align="center" cellpadding="0" cellspacing="0">
       <tr>
           <td height="50" colspan="7" align="center" valign="middle"><h1 class="pus">പുഷ്പാഞ്ജലി ബില്ലിംഗ് സോഫ്റ്റ്‌വെയര്‍</h1>
@@ -103,7 +102,7 @@ body {
       <tr>
         <td height="50" colspan="7" align="center" valign="middle">
         <table width="100%" border="0" cellspacing="0" style="border:1px solid #999999;">
-          <form id="form1" name="form1" method="post" action="report_summary.php"><tr>
+          <form id="form1" name="form1" method="post" action="report_new.php"><tr>
             <td height="50" align="center" valign="middle" bgcolor="#E4E4E4"><span class="style5">Search</span></td>
             <td height="50" align="center" valign="middle" bgcolor="#FFFFFF"><span class="style3">From 
               <?php
@@ -148,39 +147,67 @@ body {
            <?php if ($totalRows_r_report > 0) { // Show if recordset not empty ?>
              <table width="100%" border="1" cellspacing="0">
                <tr>
-                 <td width="39%" height="50" align="center" valign="middle"><span class="style5">പൂജ</span></td>
-                <td width="11%" height="50" align="center" valign="middle"><span class="style5">തുക</span></td>
-                <td width="10%" height="50" align="center" valign="middle"><span class="style5">ഏണ്ണം</span></td>
-                <td width="13%" height="50" align="center" valign="middle"><span class="style5">ആകെ തുക</span></td>
-                <td width="16%" height="50" align="center" valign="middle"><span class="style5">ഭോഗം മേല്‍ശാന്തി</span></td>
-                <td width="11%" align="center" valign="middle"><span class="style5">ഭോഗം കഴകം</span></td>
+                 <td width="39%" align="center" valign="middle"><span class="style3">date</span></td>
+                 <td width="39%" height="50" align="center" valign="middle"><span class="style3">ഇനം</span></td>
+                <td width="11%" height="50" align="center" valign="middle"><span class="style3">ഏണ്ണം</span></td>
+                <td width="10%" height="50" align="center" valign="middle"><span class="style3">തുക</span></td>
+                <td width="13%" height="50" align="center" valign="middle"><span class="style3">ആകെ തുക(Cr)</span></td>
+                <td width="13%" align="center" valign="middle"><span class="style3">ആകെ തുക(Dr)</span></td>
+                <td width="16%" height="50" align="center" valign="middle"><span class="style3">ഭോഗം മേല്‍ശാന്തി</span></td>
+                <td width="11%" align="center" valign="middle"><span class="style3">ഭോഗം കഴകം</span></td>
               </tr>
-               <?php do { ?>
-               <tr>
-                <td height="50" ><span class="style3"><?php echo $v_pooja_id=$row_r_report['pooja'];	
-				include('inc_pooja.php');			
+               <?php do {
+			   $v_date=$row_r_report['date'];
+			   mysql_query("SET NAMES utf8");
+				mysql_select_db($database_pushpanjali, $pushpanjali);
+				$query_r_report1 = "SELECT DISTINCT type FROM `master`  WHERE date='$v_date' AND status='0'";
+				$r_report1 = mysql_query($query_r_report1, $pushpanjali) or die(mysql_error());
+				$row_r_report1 = mysql_fetch_assoc($r_report1);
+				$totalRows_r_report1 = mysql_num_rows($r_report1);
+					do {
+					if($row_r_report1['type']=="vazhipadu")
+					{
 					mysql_select_db($database_pushpanjali, $pushpanjali);
-					$query_r_view_pooja = "SELECT pooja.rate, pooja.bhogam_melsanthi, pooja.bhogam_kazakam,COUNT(vazhipadu.pooja) FROM pooja,vazhipadu WHERE pooja.pooja='".$row_r_report['pooja']."' AND vazhipadu.pooja='".$row_r_report['pooja']."' AND vazhipadu.vazhipadu_date BETWEEN '$v_from' AND '$v_to' AND vazhipadu.status='0' ";
-					$r_view_pooja = mysql_query($query_r_view_pooja, $pushpanjali) or die(mysql_error());
-					$row_r_view_pooja = mysql_fetch_assoc($r_view_pooja);
-					$totalRows_r_view_pooja = mysql_num_rows($r_view_pooja);
-
-				 ?></span></td>
-               <td height="50" ><?php echo $v_pooja_rate[]=$row_r_view_pooja['rate']; ?></td>
-                <td height="50" ><?php echo $v_count[]=$row_r_view_pooja['COUNT(vazhipadu.pooja)']; ?></td>
-                <td height="50" ><?php echo $v_total_amt[]=$row_r_view_pooja['rate']*$row_r_view_pooja['COUNT(vazhipadu.pooja)'];?></td>
-                <td height="50" ><?php echo $v_mel_bhogam[]= $row_r_view_pooja['COUNT(vazhipadu.pooja)']*$row_r_view_pooja['bhogam_melsanthi']?></td>
-                <td height="50" ><?php echo $v_bhogam_kazhakam[]=$row_r_view_pooja['COUNT(vazhipadu.pooja)']*$row_r_view_pooja['bhogam_kazakam']; ?></td>
+					$query_r_vazhipadu = "SELECT COUNT(id),SUM(amount) FROM vazhipadu WHERE vazhipadu_date='$v_date'";
+					$r_vazhipadu = mysql_query($query_r_vazhipadu, $pushpanjali) or die(mysql_error());
+					$row_r_vazhipadu = mysql_fetch_assoc($r_vazhipadu);
+					$totalRows_r_vazhipadu = mysql_num_rows($r_vazhipadu);
+					}
+					else
+					{
+					mysql_select_db($database_pushpanjali, $pushpanjali);
+					$query_r_vazhipadu = "SELECT COUNT(id),SUM(amount) FROM voucher WHERE voucher_date='$v_date'";
+					$r_vazhipadu = mysql_query($query_r_vazhipadu, $pushpanjali) or die(mysql_error());
+					$row_r_vazhipadu = mysql_fetch_assoc($r_vazhipadu);
+					$totalRows_r_vazhipadu = mysql_num_rows($r_vazhipadu);
+					}
+		
+					?>
+               <tr>
+                 <td ><?php echo $v_date; ?></td>
+                <td height="50" ><?php echo $row_r_report1['type']; ?></td>
+               <td height="50" ><?php echo $row_r_vazhipadu['COUNT(id)']; ?></td>
+                <td height="50" ><?php echo $row_r_vazhipadu['SUM(amount)']; ?></td>
+                <td height="50" ><?php if($row_r_report1['type']=="vazhipadu")
+					{ echo $row_r_vazhipadu['SUM(amount)']; } ?></td>
+                <td ><?php if($row_r_report1['type']=="voucher")
+					{ echo $row_r_vazhipadu['SUM(amount)']; }?>&nbsp;</td>
+                <td height="50" ><?php  include('inc_bhogam.php'); 
+				 echo  array_sum($v_amount_bhogam); ?>&nbsp;</td>
+                <td height="50" ><?php echo array_sum($v_amounr_kahakam); ?>&nbsp;</td>
               </tr>
+              <?php } while ($row_r_report1 = mysql_fetch_assoc($r_report1)); ?>
               <?php } while ($row_r_report = mysql_fetch_assoc($r_report)); ?>
             
               <tr>
+                <td align="right" >&nbsp;</td>
                 <td height="50" align="right" ><strong>ആകെ </strong></td>
                 <td height="50" >&nbsp;</td>
-                <td height="50" ><?php echo array_sum($v_count); ?></td>
-                <td height="50" ><?php echo array_sum($v_total_amt); ?></td>
-                <td height="50" ><?php echo array_sum($v_mel_bhogam); ?></td>
-                <td height="50" ><?php echo array_sum($v_bhogam_kazhakam); ?></td>
+                <td height="50" >&nbsp;</td>
+                <td height="50" >&nbsp;</td>
+                <td >&nbsp;</td>
+                <td height="50" >&nbsp;</td>
+                <td height="50" >&nbsp;</td>
               </tr> <?php } // Show if recordset not empty ?>
                </table>
 </div>
@@ -202,5 +229,5 @@ body {
 <?php
 mysql_free_result($r_report);
 
-mysql_free_result($r_view_pooja);
+mysql_free_result($r_vazhipadu);
 ?>

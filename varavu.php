@@ -1,4 +1,6 @@
-<?php require_once('Connections/pushpanjali.php'); 
+<?php 
+ header('Content-type: text/html; charset=utf-8');
+ require_once('Connections/pushpanjali.php'); 
 require_once('calendar/classes/tc_calendar.php');?>
 <?php
 if (!function_exists("GetSQLValueString")) {
@@ -70,7 +72,18 @@ return($f_var_timestamp);
 <link href="style.css" rel="stylesheet" type="text/css" />
 <link href="calendar/calendar.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="calendar/calendar.js"></script>
-
+<script type="text/javascript">
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+  window.open(theURL,winName,features);
+}
+</script>
+<script type="text/javascript">
+<!--
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+  window.open(theURL,winName,features);
+}
+//-->
+</script>
 </head>
 
 <body marginheight="0" marginwidth="0" topmargin="0" bottommargin="0" rightmargin="0" leftmargin="0">
@@ -98,7 +111,7 @@ return($f_var_timestamp);
    			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			  <tr>
           				<td height="60" colspan="7" align="center" valign="middle">
-                        <h1 class="pus noprint">പുത്തന്‍കാവ് ചാരംപറമ്പ്‌ ഭഗവതി ക്ഷേത്രം</h1>
+                        <h1 class="pus noprint">പുത്തന്‍കാവ് ചാരപറമ്പ്‌ ഭഗവതി ക്ഷേത്രം</h1>
             			</td> 
    			  </tr>
         <tr>
@@ -106,8 +119,9 @@ return($f_var_timestamp);
             <table width="855" border="0" align="right" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
           <form id="form1" name="form1" method="post" action="home.php">
           </form>
-            <td height="50" align="center" valign="middle" bgcolor="#FFFFFF">
-              <label><input type="button" class="style1" onclick="window.print();"  value="Print"/>
+            <td height="50" align="center" valign="middle" bgcolor="#FFFFFF" class="style1">
+              <label><span class="style5">Daily Report on <?php echo $v_date; ?></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="button" class="style1" onclick="window.print();"  value="Print"/>
                 </label>                      </td>
             </tr>       
             </table>
@@ -117,30 +131,41 @@ return($f_var_timestamp);
     <td align="right" valign="middle">
     <div class="overflow_scroll" style="height:400px; width:858px" id="report_div" >
       <?php if ($totalRows_r_report > 0) { // Show if recordset not empty ?>
-             <table width="100%" border="1" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
-               <tr>
-                 <td height="50" align="center" valign="middle"><span class="style3"><strong>Date</strong></span></td>
-                <td height="50" align="center" valign="middle"><span class="style3"><strong>Name</strong></span></td>
-                <td height="50" align="center" valign="middle"><span class="style3"><strong>Pooja</strong></span></td>
-                <td height="50" align="center" valign="middle"><span class="style3"><strong>Star</strong></span></td>
-                <td height="50" align="center" valign="middle"><span class="style3"><strong>Amount</strong></span></td>
-                <td align="center" valign="middle"><span class="style3"><strong>Edit</strong></span></td>
-                <td align="center" valign="middle"><span class="style3"><strong>Delete</strong></span></td>
+             <table width="1125" border="0" align="right" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
+               <tr class="style1">
+                 <td width="50" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong>No</strong></td>
+                 <td width="200" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;">&nbsp;&nbsp;<strong><span class="style1">Name</span></strong></td>
+                <td width="150" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Pooja</span></strong></td>
+                <td width="200" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Star</span></strong></td>
+                <td width="100" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Amount</span></strong></td>
+                <td width="75" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Edit</span></strong></td>
+                <td width="75" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Delete</span></strong></td>
+                <td width="75" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong>Print</strong></td>
                 </tr>
                <?php do { ?>
-                 <tr>
-                   <td height="30" align="center" valign="middle"><span class="style3"><?php echo echotomysql($row_r_report['vazhipadu_date']); 
- ?></span></td>
-                   <td height="30" align="center" valign="middle"><span class="style1"><?php echo $row_r_report['name']; ?></span></td>
-                   <td height="30" align="center" valign="middle"><span class="style1"><?php $v_pooja_id=$row_r_report['pooja'];
-				   include('inc_pooja.php'); echo $v_pooja_name; ?></span></td>
-                   <td height="30" align="center" valign="middle"><span class="style1"><?php $v_star=$row_r_report['star'];
-				  include('star_name.php'); echo $v_starname; ?></span></td>
-                   <td height="30" align="center" valign="middle"><span class="style1"><?php echo $row_r_report['amount']; ?></span></td>
-                   <td height="30" align="center" valign="middle"><a href="#" onclick="MM_openBrWindow('edit_report.php?id=<?php echo $row_r_report['id']; ?>','','width=400,height=400')"><img src="images/edit.png" width="20" border="0" /></a></td>
-                   <td height="30" align="center" valign="middle"><a href="delete_report.php?id=<?php echo $row_r_report['id']; ?>"><img src="images/delete.png" width="20" border="0" /></a></td>
-                   </tr>
-                 <?php } while ($row_r_report = mysql_fetch_assoc($r_report)); ?>
+                 <tr class="style1">
+                   <td width="200" align="left" valign="middle"><?php echo $row_r_report['receipt_number']; ?></td>
+                   <td width="200" height="30" align="left" valign="middle">&nbsp;&nbsp;<?php echo $row_r_report['name']; ?></td>
+                   <td width="200" height="30" align="left" valign="middle"><?php $v_pooja_id=$row_r_report['pooja'];
+				   include('inc_pooja.php'); echo $v_pooja_name; ?></td>
+                   <td width="200" height="30" align="left" valign="middle"><?php $v_star=$row_r_report['star'];
+				  include('star_name.php'); echo $v_starname; ?></td>
+                   <td width="100" height="30" align="left" valign="middle"><?php echo $v_amts[]=$row_r_report['amount']; ?></td>
+                   <td width="75" height="30" align="left" valign="middle"><a href="#" onclick="MM_openBrWindow('edit_report.php?id=<?php echo $row_r_report['id']; ?>','','width=400,height=400')"><img src="images/edit.png" width="20" border="0" /></a></td>
+                   <td width="75" height="30" align="left" valign="middle"><a href="delete_report.php?id=<?php echo $row_r_report['id']; ?>"><img src="images/delete.png" width="20" border="0" /></a></td>
+                   <td width="75" align="left" valign="middle" onclick="MM_openBrWindow('print_vazhipadu.php?id=<?php echo $row_r_report['id']; ?>','','width=600,height=400')" onfocus="MM_openBrWindow('print_vazhipadu.php?id=<?php echo $row_r_report['id']; ?>','','width=600,height=400')"><a href="#">Print</a></td>
+                   </tr><?php } while ($row_r_report = mysql_fetch_assoc($r_report)); ?>
+                 <tr class="style1">
+                   <td align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
+                   <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;&nbsp;<strong>Total</strong></td>
+                   <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
+                   <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
+                   <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;"><strong><?php echo array_sum($v_amts); ?>&nbsp;</strong></td>
+                   <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
+                   <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
+                   <td align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
+                 </tr>
+                 
                 </table>
              <?php } // Show if recordset not empty ?>
     </div>

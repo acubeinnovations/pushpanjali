@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<info>
-	<infoitem key="UD_r_opng_balance" value="name:SUM(cr);datatype:real,name:SUM(dr);datatype:real" />
-	<infoitem key="UD_r_view_summary" value="name:id;datatype:int,name:type;datatype:blob,name:type_id;datatype:int,name:date;datatype:date,name:cr;datatype:int,name:dr;datatype:int,name:status;datatype:int" />
-	<infoitem key="UD_r_vaz" value="name:id;datatype:int,name:name;datatype:string,name:star;datatype:string,name:amount;datatype:int,name:pooja;datatype:string,name:vazhipadu_date;datatype:date,name:status;datatype:int,name:booking_date;datatype:date" />
-	<infoitem key="UD_r_select_pooja" value="name:id;datatype:int,name:pooja;datatype:blob,name:rate;datatype:int,name:bhogam_melsanthi;datatype:real,name:bhogam_kazakam;datatype:real" />
-	<infoitem key="UD_r_view_star" value="name:id;datatype:int,name:starname;datatype:string" />
-	<infoitem key="UD_r_view_receipt_no" value="name:MAX(receipt_number);datatype:int" />
-</info>

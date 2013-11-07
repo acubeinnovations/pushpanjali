@@ -1,6 +1,4 @@
-<?php 
- header('Content-type: text/html; charset=utf-8');
-require_once('Connections/pushpanjali.php'); ?>
+<?php require_once('Connections/pushpanjali.php'); ?>
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -32,10 +30,10 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 
 mysql_select_db($database_pushpanjali, $pushpanjali);
-$query_r_view_purpose = "SELECT vou_head FROM voucher_head WHERE vou_hd_id='$v_vou_hd_id'";
-$r_view_purpose = mysql_query($query_r_view_purpose, $pushpanjali) or die(mysql_error());
-$row_r_view_purpose = mysql_fetch_assoc($r_view_purpose);
-$totalRows_r_view_purpose = mysql_num_rows($r_view_purpose);
-$v_vou_head=$row_r_view_purpose['vou_head'];
-mysql_free_result($r_view_purpose);
+$query_r_view_inc_pooja = "SELECT * FROM voucher_head WHERE vou_hd_id='$v_vou_id'";
+$r_view_inc_pooja = mysql_query($query_r_view_inc_pooja, $pushpanjali) or die(mysql_error());
+$row_r_view_inc_pooja = mysql_fetch_assoc($r_view_inc_pooja);
+$totalRows_r_view_inc_pooja = mysql_num_rows($r_view_inc_pooja);?>
+<?php
+$v_voucher_name=$row_r_view_inc_pooja['vou_head'];
 ?>

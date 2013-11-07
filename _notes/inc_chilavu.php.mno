@@ -1,4 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<info>
-	<infoitem key="UD_r_view_voucher" value="name:id;datatype:int,name:voucher_date;datatype:date,name:name;datatype:blob,name:address;datatype:blob,name:purpose;datatype:blob,name:description;datatype:blob,name:amount;datatype:int,name:status;datatype:int" />
-</info>

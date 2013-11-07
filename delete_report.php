@@ -35,7 +35,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if (isset($_GET['id'])) {
-  $updateSQL = sprintf("UPDATE vazhipadu SET status=%s WHERE id=%s",
+  $updateSQL = sprintf("UPDATE vazhipadu SET status=%s WHERE receipt_number=%s",
                        GetSQLValueString(1, "int"),
                        GetSQLValueString($_GET['id'], "int"));
 
@@ -51,7 +51,7 @@ if (isset($_GET['id'])) {
   $Result1 = mysql_query($updateSQL1, $pushpanjali) or die(mysql_error()); 
   
 
-  $updateGoTo = "report.php";
+  $updateGoTo = "report_sumup.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
     $updateGoTo .= $_SERVER['QUERY_STRING'];

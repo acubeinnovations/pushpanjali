@@ -1,39 +1,5 @@
-<?php 
-header('Content-type: text/html; charset=utf-8');
-require_once('Connections/pushpanjali.php');
-require_once('calendar/classes/tc_calendar.php');
-?>
 <?php
-if (!function_exists("GetSQLValueString")) {
-function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
-{
-  if (PHP_VERSION < 6) {
-    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
-  }
-
-  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
-
-  switch ($theType) {
-    case "text":
-      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
-      break;    
-    case "long":
-    case "int":
-      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
-      break;
-    case "double":
-      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
-      break;
-    case "date":
-      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
-      break;
-    case "defined":
-      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
-      break;
-  }
-  return $theValue;
-}
-}
+require_once('calendar/classes/tc_calendar.php');
 if(isset($_POST["from_date"]) && trim($_POST["from_date"])!=""){
 	$v_from = $_POST['from_date'];
 }else{
@@ -46,21 +12,6 @@ if(isset($_POST["to_date"]) &&  trim($_POST["to_date"])!=""){
 	$v_to = $_POST['to_date'];
 }else{
 	$v_to = date("Y-m-d");	
-}
-mysql_query("SET NAMES utf8");
-mysql_select_db($database_pushpanjali, $pushpanjali);
-$query_r_vaz = "SELECT * FROM vazhipadu WHERE booking_date>='$v_from' AND booking_to<='$v_to' AND status='0'";
-$r_vaz = mysql_query($query_r_vaz, $pushpanjali) or die(mysql_error());
-$row_r_vaz = mysql_fetch_assoc($r_vaz);
-$totalRows_r_vaz = mysql_num_rows($r_vaz);
-
-function echotomysql($f_MySqlDate2){
-$f_date_array = explode("-",$f_MySqlDate2); 
-$f_var_day = $f_date_array[0];
-$f_var_month = $f_date_array[1];
-$f_var_year = $f_date_array[2];
-$f_var_timestamp =$f_var_year.'-'.$f_var_month.'-'.$f_var_day ;
-return($f_var_timestamp);
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -78,15 +29,6 @@ return($f_var_timestamp);
 <title>Puthenkavu Kshetram</title>
 <link href="*.css" rel="stylesheet" type="text/css" />
 <link href="style.css" rel="stylesheet" type="text/css" />
-
-
-<script type="text/javascript">
-<!--
-function MM_openBrWindow(theURL,winName,features) { //v2.0
-  window.open(theURL,winName,features);
-}
-//-->
-</script>
 <link href="calendar/calendar.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="calendar/calendar.js"></script>
 
@@ -103,7 +45,8 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
         <td width="81" height="41" align="center" valign="middle"><a href="pooja.php" class="menu">Pooja</a></td>
         <td width="127" height="41" align="center" valign="middle"><a href="vazhipadu.php" class="menu">Vazhipadu</a></td>
         <td width="97" height="41" align="center" valign="middle"><a href="voucher.php" class="menu">Vouchers</a></td>
-        <td width="75" height="41" align="center" valign="middle"><a href="report_sumup.php" class="menu">Report</a></td>
+        <td width="75" height="41" align="center" valign="middle"><a href="report.php" class="menu">Report</a></td>
+        <td width="171" align="center" valign="middle"><a href="report_summary.php"  class="menu">Report summary</a></td>
         <td width="114" height="41" align="center" valign="middle"><a href="logout.php" class="menu">Logout</a></td>
       </tr>
     </table>
@@ -123,8 +66,13 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
         <tr>
         	<td align="right"> 
             <table width="855" border="0" align="right" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
-          <form id="form1" name="form1" method="post" action="home.php"><tr class="noprint">
-            <td height="50" colspan="4" align="center" valign="middle" bgcolor="#FFFFFF" class="style1">Search &nbsp;&nbsp;&nbsp; From &nbsp;&nbsp;&nbsp;
+          <form id="form1" name="form1" method="post" action="home_new.php"><tr class="noprint">
+            <td height="50" colspan="4" align="center" valign="middle" bgcolor="#FFFFFF" class="style1">Search&nbsp;&nbsp;&nbsp; From &nbsp;&nbsp;&nbsp;
+            <select name="select" id="select">
+                <option value="1">വരവ്</option>
+                <option value="2">ചിലവ്</option>
+                <option value="3">ഭോഗം</option>
+              </select> &nbsp;&nbsp;&nbsp; From &nbsp;&nbsp;&nbsp;
 <?php
 	  $myCalendar = new tc_calendar("from_date", true, false);
 	  $myCalendar->setIcon("calendar/images/iconCalendar.gif");
@@ -166,32 +114,26 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
   <tr>
     <td align="right" valign="middle">
     <div class="overflow_scroll" style="height:400px; width:858px" id="report_div" >
-      <?php if ($totalRows_r_vaz > 0) { // Show if recordset not empty ?>
-  <table width="838" border="0" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
-    <tr>
-      <td width="25" bgcolor="#F4F4F4" class="style1">&nbsp;</td>
-      <td width="122" height="30" bgcolor="#F4F4F4" class="style1" align="left"><strong>തിയതി</strong></td>
-      <td width="201" height="30" bgcolor="#F4F4F4" align="left"><strong><span class="style1">പേര്</span></strong></td>
-      <td width="114" height="30" bgcolor="#F4F4F4" align="left"><strong><span class="style1">നക്ഷത്രം</span></strong></td>
-      <td width="240" height="30" bgcolor="#F4F4F4" align="left"><strong><span class="style1">പൂജ</span></strong></td>
-      <td width="146" height="30" bgcolor="#F4F4F4" align="left"><strong><span class="style1">തുക</span></strong></td>
-      
-    </tr>
-    <?php do { ?>
-      <tr>
-        <td width="25" class="style1">&nbsp;</td>
-        <td width="122" height="30" class="style1" align="left"><?php echo echotomysql($row_r_vaz['booking_date']); ?></td>
-        <td width="201" height="30" align="left"><span class="style1"><?php echo $row_r_vaz['name']; ?></span></td>
-        <td width="114" height="30"align="left">
-		<span class="style1"><?php $v_star=$row_r_vaz['star']; include('inc_star_name_home.php'); echo $v_starname; ?>
-        </span></td>
-        <td width="240" height="30" align="left"><span class="style1"><?php $v_pooja_id=$row_r_vaz['pooja']; include('inc_pooja.php');  echo $v_pooja_name;?></span></td>
-        <td width="146" height="30" align="left"><span class="style1"><?php echo $row_r_vaz['amount']; ?></span></td>
-        
-      </tr>
-      <?php } while ($row_r_vaz = mysql_fetch_assoc($r_vaz)); ?>
-  </table>
-  <?php } // Show if recordset not empty ?>
+     <?php if(isset($_POST['select']))
+	 {
+	 if($_POST['select']==1)
+	 {
+	 include('inc_varavu.php'); 
+	 }
+	 else if($_POST['select']==2)
+	 {
+	 include('chilavu.php'); 
+	 }
+	 else if($_POST['select']==3)
+	 {
+	 include('bhogam.php'); 
+	 }
+	 }
+	 else
+	 {
+	 include('inc_varavu.php'); 
+
+	 }?>
     </div>
       
      </td>
@@ -208,7 +150,3 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 <span class="footer">All rights reserved. ® Acube Innovations Pvt Ltd. Phone: 0484 6066060.  Copyright © 2013. </span></div>
 </body>
 </html>
-<?php
-
-mysql_free_result($r_vaz);
-?>

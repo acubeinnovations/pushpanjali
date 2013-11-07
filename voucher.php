@@ -1,4 +1,10 @@
-<?php require_once('Connections/pushpanjali.php');
+<?php 
+header('Content-type: text/html; charset=utf-8');
+require_once('Connections/pushpanjali.php'); ?>
+<?php require_once('Connections/pushpanjali.php'); ?>
+<?php 
+ header('Content-type: text/html; charset=utf-8');
+ require_once('Connections/pushpanjali.php');
  require_once('calendar/classes/tc_calendar.php'); 
  date_default_timezone_set('Asia/Calcutta');?>
 <?php
@@ -45,6 +51,14 @@ $query_r_vou_hd = "SELECT * FROM voucher_head";
 $r_vou_hd = mysql_query($query_r_vou_hd, $pushpanjali) or die(mysql_error());
 $row_r_vou_hd = mysql_fetch_assoc($r_vou_hd);
 $totalRows_r_vou_hd = mysql_num_rows($r_vou_hd);
+
+
+mysql_select_db($database_pushpanjali, $pushpanjali);
+$query_voucher = "SELECT * FROM voucher ORDER BY id DESC";
+$voucher = mysql_query($query_voucher, $pushpanjali) or die(mysql_error());
+$row_voucher = mysql_fetch_assoc($voucher);
+$totalRows_voucher = mysql_num_rows($voucher);
+$vid=$row_voucher['id']+1;
 
 $editFormAction = $_SERVER['PHP_SELF'];
 if (isset($_SERVER['QUERY_STRING'])) {
@@ -169,47 +183,88 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 <?php 
 if($v_print==1)
 { ?>
-<body onLoad="PrintDiv()">
+<body onLoad="PrintDiv()" marginheight="0" marginwidth="0" topmargin="0" bottommargin="0" rightmargin="0" leftmargin="0"> 
 <?php } else { ?>
 <body marginheight="0" marginwidth="0" topmargin="0" bottommargin="0" rightmargin="0" leftmargin="0">
 <?php }?>
+
+
+
+
+
+
   <div id="divToPrint" style="display:none;" >
-      <table width="275" border="0" align="center" cellpadding="0" cellspacing="0">
-       <tr>
-        <td height="40" align="left"><span class="style3"><strong>തിയതി</strong></span></td>
-        <td height="40"><span class="style3">
-          <?php if (isset($_POST['date'])) {echo $_POST['date']; }?>
-        </span></td>
-      </tr>
-      <tr>
-        <td width="102" height="40" align="left"><span class="style2">പേര്</span></td>
-        <td width="173" height="40"><span class="style3">
-          <?php if (isset($_POST['name'])) {echo $_POST['name'];}?>
-        </span></td>
-      </tr>
-      <tr>
-        <td height="40" align="left"><span class="style1">വിലാസം</span></td>
-        <td height="40"><span class="style3">
-          <?php if (isset($_POST['address'])) {echo $_REQUEST['address'];} ?>
-        </span></td>
-      </tr>
-      <tr>
-        <td height="40" align="left"><span class="style1">ആവശ്യം</span></td>
-        <td height="40"><span class="style3">
-          <?php if (isset($_POST['purpose'])) {echo $_REQUEST['purpose'];} ?>
-        </span></td>
-      </tr>
-      <tr>
-        <td height="40" align="left"><span class="style1">രൂപ</span></td>
-        <td height="40"><span class="style3">
-          <?php if (isset($_POST['amount'])) {echo $_REQUEST['amount'];} ?>
-        </span></td>
-      </tr>
-      <tr>
-        
-      </tr>
-    </table>
+  <style type="text/css">
+.letter {
+font-family:"kartika";
+font-size:8px;
+letter-spacing:2px;
+line-height:20px;
+}
+@font-face
+{
+font-family: "kartika";
+src: url('fonts/kartika.ttf');
+}
+.english
+{
+font-family:"Arial";
+font-size:6px;
+letter-spacing:2px;
+line-height:20px;
+}
+	</style>
+  
+  
+  <table width="500" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="275" height="110">&nbsp;</td>
+    <td width="125">&nbsp;</td>
+    <td width="100">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="275" height="65" align="left" valign="top" class="letter">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Voucher </br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	
+	<?php if (isset($_REQUEST['purpose'])) {$v_vou_id=$_REQUEST['purpose'];include('inc_voucher.php');  echo $v_voucher_name; } ?>        </td>
+    <td width="125" height="65">&nbsp;</td>
+    <td width="100" height="65" class="letter" align="left" valign="top" ><?php if (isset($_REQUEST['date'])) {echo echotomysql($_POST['date']);}?><br />
+<br />
+<?php if (isset($_POST['vid'])) {echo $_POST['vid'];}  ?></td>
+  </tr>
+  <tr>
+    <td height="120" colspan="3" align="left" valign="middle">
+    <table width="500" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+    <td width="300" height="25" align="left" valign="middle" class="letter">
+	<?php if (isset($_POST['name'])) {echo $_POST['name'];}?><br />
+    <?php if (isset($_POST['address'])) {echo $_POST['address'];}?><br />
+	<?php if (isset($_POST['description'])) {echo $_POST['description'];}?>
+</td>
+    <td width="100" height="25" align="middle" valign="top" class="letter">
+     <?php if (isset($_POST['amount'])) {echo $_REQUEST['amount'];} ?>
+    </td>
+  </tr>
+</table>
+	</td>
+  </tr>
+<?php if (isset($_REQUEST['amount'])) {?>
+  <tr>
+    <td height="60">&nbsp;</td>
+    <td height="60">&nbsp;</td>
+    <td height="60" align="middle" valign="bottom" class="letter"><?php if (isset($_POST['amount'])) {echo $_REQUEST['amount'];} ?></td>
+  </tr>
+  <?php }?>
+</table>
     </div>
+    
+    
+    
+    
+    
+    
+    
+    
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td height="53" align="left" valign="top" background="images/bg.PNG"><table width="842" border="0" align="left" cellpadding="0" cellspacing="1">
@@ -245,7 +300,7 @@ if($v_print==1)
                     </tr>
                   <tr>
                     <td>&nbsp;</td>
-                    <td height="30" align="left" valign="middle" class="style1">തിയതി</td>
+                    <td height="30" align="left" valign="middle" class="style1">Date</td>
                     <td height="30" colspan="2" align="left" valign="middle" class="style1"><?php
 			  $myCalendar = new tc_calendar("date", true, false);
 			  $myCalendar->setIcon("calendar/images/iconCalendar.gif");
@@ -260,7 +315,7 @@ if($v_print==1)
                     </tr>
                   <tr>
                     <td>&nbsp;</td>
-                    <td height="30" align="left" valign="middle" class="style1">പേര്</td>
+                    <td height="30" align="left" valign="middle" class="style1">Name</td>
                     <td height="30" colspan="2" align="left" valign="middle" class="style1">
                       <label>
                         <input name="name" type="text" id="name" value="" size="32" />
@@ -270,13 +325,13 @@ if($v_print==1)
                     </tr>
                   <tr>
                     <td>&nbsp;</td>
-                    <td height="30" align="left" valign="middle" class="style1">വിലാസം</td>
+                    <td height="30" align="left" valign="middle" class="style1">Address</td>
                     <td height="30" colspan="2" align="left" valign="middle" class="style1"><textarea name="address" cols="32" id="address"></textarea>                      <span id="d_address" class="error"></span></td>
                     <td align="left" valign="middle" class="style1">&nbsp;</td>
                     </tr>
                   <tr>
                     <td>&nbsp;</td>
-                    <td height="30" align="left" valign="middle" class="style1">Head</td>
+                    <td height="30" align="left" valign="middle" class="style1">Select Head</td>
                     <td height="30" align="left" valign="middle" class="style1"><label>
                       <select name="purpose" id="purpose">
                         <?php
@@ -309,7 +364,7 @@ do {
                   </tr>
                   <tr>
                     <td>&nbsp;</td>
-                    <td height="30" align="left" valign="middle" class="style1">രൂപ</td>
+                    <td height="30" align="left" valign="middle" class="style1">Amount</td>
                     <td height="30" colspan="2" align="left" valign="middle" class="style1">
                       <input name="amount" type="text" id="amount" value="" size="32" />
                       
@@ -321,6 +376,7 @@ do {
                     <td height="30" align="left" valign="middle" class="style1">&nbsp;</td>
                     <td height="30" colspan="2" align="left" valign="middle" class="style1"><label>
                       <input type="hidden" name="MM_insert" value="form1" />
+                      <input name="vid" type="hidden" value="<?php echo $vid; ?>" />
                       <input type="submit" name="submit" id="button" value="  Submit  " onclick="return validateForm();"/>
                       </label></td>
                     <td align="left" valign="middle" class="style1">&nbsp;</td>
@@ -359,4 +415,6 @@ do {
 mysql_free_result($r_view_voucher);
 
 mysql_free_result($r_vou_hd);
+
+mysql_free_result($voucher);
 ?>

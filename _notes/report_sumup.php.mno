@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<info>
-	<infoitem key="UD_r_view_voucher" value="name:SUM(amount);datatype:real" />
-	<infoitem key="UD_r_view_vazhipadu" value="name:SUM(amount);datatype:real" />
-	<infoitem key="UD_r_opng_balance" value="name:SUM(cr);datatype:real,name:SUM(dr);datatype:real" />
-	<infoitem key="UD_r_view_summary" value="name:date;datatype:date" />
-</info>

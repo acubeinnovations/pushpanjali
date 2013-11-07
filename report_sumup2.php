@@ -110,12 +110,12 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
     <td height="53" align="left" valign="top" background="images/bg.PNG">
     <table width="852" border="0" align="left" cellpadding="0" cellspacing="1">
       <tr class="menu noprint" >
-        <td width="81" height="41" align="center" valign="middle"><a href="home.php" class="menu">Home</a></td>
+        <td width="81" height="41" align="center" valign="middle"><a href="home.php" class="menu_active">Home</a></td>
         <td width="78" height="41" align="center" valign="middle"><a href="star.php" class="menu">Star</a></td>
         <td width="81" height="41" align="center" valign="middle"><a href="pooja.php" class="menu">Pooja</a></td>
         <td width="127" height="41" align="center" valign="middle"><a href="vazhipadu.php" class="menu">Vazhipadu</a></td>
         <td width="97" height="41" align="center" valign="middle"><a href="voucher.php" class="menu">Vouchers</a></td>
-        <td width="75" height="41" align="center" valign="middle"><a href="report_sumup.php" class="menu_active">Report</a></td>
+        <td width="75" height="41" align="center" valign="middle"><a href="report_sumup.php" class="menu">Report</a></td>
         <td width="114" height="41" align="center" valign="middle"><a href="logout.php" class="menu">Logout</a></td>
       </tr>
     </table>
@@ -185,15 +185,20 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
           <td width="113" height="40" align="right" valign="middle" style="border-bottom:1px solid #999999;"><span class="style5">Credit&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
           <td width="125" height="40" align="right" valign="middle" style="border-bottom:1px solid #999999;"><span class="style5">Debit&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
         </tr>
-        
+        <tr>
+          <td width="129" height="30" align="center" style="border-bottom:1px solid #999999;"><span class="style6"></span></td>
+          <td height="30" align="left" class="style1" style="padding-left:8px;border-bottom:1px solid #999999;"><span class="style5">മുന്‍ മാസ നീക്കിയിരിപ്പ്</span></td>
+          <td height="30" align="right" valign="middle" class="style1" style="border-bottom:1px solid #999999;"><span class="style1"> <strong><?php if($v_opng_bal>0){ echo $v_opn_cr=$v_opng_bal; } else { echo $v_opn_cr ="0.00";}?>&nbsp;&nbsp;&nbsp;&nbsp;</strong></span></td>
+          <td height="30" align="right" valign="middle" class="style1" style="border-bottom:1px solid #999999;"><span class="style1"><strong><?php if($v_opng_bal<0){ echo $v_opn_dr=abs($v_opng_bal); } else { echo $v_opn_dr="0.00";}?>&nbsp;&nbsp;&nbsp;&nbsp;</strong></span></td>
+        </tr>
         <?php do {
 		if($row_r_view_summary['date']!="") { ?>
           <tr>
             <td width="129" height="0" align="center" class="style1"><?php echo echotomysql($row_r_view_summary['date']); 
 				?></td>
             <td width="469" height="30" align="left" valign="middle" class="style1">വരവ് - വഴിപാടുകള്‍</td>
-            <td width="113" height="15" align="right" valign="middle" class="style1"><a href="varavu.php?date=<?php echo $row_r_view_summary['date']; ?>">
-<?php
+            <td width="113" height="15" align="right" valign="middle" class="style1">
+			<?php
 				 mysql_select_db($database_pushpanjali, $pushpanjali);
 				$query_r_view_vazhipadu = "SELECT SUM(amount) FROM vazhipadu WHERE vazhipadu_date='".$row_r_view_summary['date']."'";
 				$r_view_vazhipadu = mysql_query($query_r_view_vazhipadu, $pushpanjali) or die(mysql_error());
@@ -204,9 +209,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 				echo $row_r_view_vazhipadu['SUM(amount)'].'.00';
 				$v_cr[]=$row_r_view_vazhipadu['SUM(amount)']; }
 				else
-				{ echo "0.00"; $v_cr[]=0; }?>&nbsp;&nbsp;&nbsp;&nbsp;
-                </a>
-                </td>
+				{ echo "0.00"; $v_cr[]=0; }?>&nbsp;&nbsp;&nbsp;&nbsp;</td>
             <td width="125" height="15" align="right" valign="middle" class="style1">0.00&nbsp;&nbsp;&nbsp;&nbsp;</td>
           </tr>
           <tr>
@@ -221,10 +224,9 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			$row_r_view_voucher = mysql_fetch_assoc($r_view_voucher);
 			$totalRows_r_view_voucher = mysql_num_rows($r_view_voucher);?>0.00&nbsp;&nbsp;&nbsp;&nbsp;</td>
             <td width="125" height="15" align="right" valign="middle" class="style1" style="border-bottom:1px solid #999999;">
-            <a href="chilavu.php?from_date=<?php echo $row_r_view_summary['date']; ?>&to_date=<?php echo $row_r_view_summary['date']; ?>"> 
 			<?php if($row_r_view_voucher['SUM(amount)']!="") { 
 			$v_dr[]=$row_r_view_voucher['SUM(amount)'];
-			echo $row_r_view_voucher['SUM(amount)'].'.00'; } else{ echo "0.00"; $v_dr[]=0;} ?>&nbsp;&nbsp;&nbsp;&nbsp;</a></td>
+			echo $row_r_view_voucher['SUM(amount)'].'.00'; } else{ echo "0.00"; $v_dr[]=0;} ?>&nbsp;&nbsp;&nbsp;&nbsp;</td>
           </tr>
           <?php } else {?>
           <tr>
@@ -236,45 +238,21 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
           <tr>
             <td height="30" align="left" valign="middle" class="style1" style="padding-left:8px; border-bottom:1px solid #999999; font-family: Arial, Helvetica, sans-serif;"><span class="style8">ചിലവ് - വൌച്ചറുകള്‍</span></td>
             <td height="15" align="right" valign="middle" class="style1" style="border-bottom:1px solid #999999;">0.00&nbsp;&nbsp;&nbsp;&nbsp;</td>
-            <td height="15" align="right" valign="middle" class="style1" style="border-bottom:1px solid #999999;">
-            
-			<?php echo $v_dr[]="0.00"; ?> &nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
+            <td height="15" align="right" valign="middle" class="style1" style="border-bottom:1px solid #999999;"><?php echo $v_dr[]="0.00"; ?>&nbsp;&nbsp;&nbsp;&nbsp;</td>
           </tr><?php } } while ($row_r_view_summary = mysql_fetch_assoc($r_view_summary));?>
           <tr>
-            <td height="30" align="center" bgcolor="#FEFEFE" style="border-bottom:1px solid #999999;">&nbsp;</td>
-            <td height="30" align="left" bgcolor="#FEFEFE" class="style1" style="padding-left:8px;border-bottom:1px solid #999999;">അകെ തുക വരവ്</td>
-            <td height="30" align="right" valign="middle" bgcolor="#FEFEFE" class="style1" style="border-bottom:1px solid #999999;">
+            <td height="40" align="center" style="border-bottom:1px solid #999999;">&nbsp;</td>
+            <td height="40" align="left" class="style1" style="padding-left:8px;border-bottom:1px solid #999999;">അകെ തുക</td>
+            <td height="40" align="right" valign="middle" class="style1" style="border-bottom:1px solid #999999;">
 			<a href="varavu_summary.php">
 			<?php echo array_sum($v_cr); ?>.00 </a>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-            <td height="30" align="right" valign="middle" bgcolor="#FEFEFE" class="style1" style="border-bottom:1px solid #999999;">&nbsp;
-			</td>
-          </tr>
-          <tr>
-            <td height="30" align="center" bgcolor="#FEFEFE" style="border-bottom:1px solid #999999;">&nbsp;</td>
-            <td height="30" align="left" bgcolor="#FEFEFE" class="style1" style="padding-left:8px;border-bottom:1px solid #999999;">ആകെ തുക ചിലവ്</td>
-            <td height="30" align="right" valign="middle" bgcolor="#FEFEFE" class="style1" style="border-bottom:1px solid #999999;">&nbsp;</td>
-            <td height="30" align="right" valign="middle" bgcolor="#FEFEFE" class="style1" style="border-bottom:1px solid #999999;">
-            <a href="chilavu_sumup.php?date=<?php echo $row_r_view_summary['date']; ?>"><?php echo array_sum($v_dr); ?>.00</a>
+            <td height="40" align="right" valign="middle" class="style1" style="border-bottom:1px solid #999999;">
+			<a href="chilavu.php?date=<?php echo $row_r_view_summary['date']; ?>"><?php echo array_sum($v_dr); ?>.00</a>
             &nbsp;&nbsp;&nbsp;&nbsp;</td>
           </tr>
           <tr>
-            <td height="30" align="center" bgcolor="#FEFEFE" style="border-bottom:1px solid #999999;">&nbsp;</td>
-            <td height="30" align="left" bgcolor="#FEFEFE" class="style1" style="padding-left:8px;border-bottom:1px solid #999999;">
-            <strong>തന്‍ മാസ നീക്കിയിരിപ്പ്</strong> <?php $aay=array_sum($v_cr)-array_sum($v_dr);?></td>
-            <td height="30" align="right" valign="middle" bgcolor="#FEFEFE" class="style1" style="border-bottom:1px solid #999999;"><?php if($aay>0) { echo $aay; } else { echo "0"; }  ?>.00&nbsp;&nbsp;&nbsp;&nbsp;</td>
-            <td height="30" align="right" valign="middle" bgcolor="#FEFEFE" class="style1" style="border-bottom:1px solid #999999;"><?php if($aay<0) { echo $aay*-1; }?>.00&nbsp;&nbsp;&nbsp;&nbsp;</td>
-          </tr>
-          <tr>
-          <td width="129" height="30" align="center" style="border-bottom:1px solid #999999;">&nbsp;</td>
-          <td height="30" align="left" class="style1" style="padding-left:8px;border-bottom:1px solid #999999;">
-          <strong>മുന്‍ മാസ നീക്കിയിരിപ്പ്</strong></td>
-          <td height="30" align="right" valign="middle" class="style1" style="border-bottom:1px solid #999999;"><span class="style1"> <strong><?php if($v_opng_bal>0){ echo $v_opn_cr=$v_opng_bal; } else { echo $v_opn_cr ="0";}?>.00&nbsp;&nbsp;&nbsp;&nbsp;</strong></span></td>
-          <td height="30" align="right" valign="middle" class="style1" style="border-bottom:1px solid #999999;"><span class="style1"><strong><?php if($v_opng_bal<0){ echo $v_opn_dr=abs($v_opng_bal); } else { echo $v_opn_dr="0.00";}?>&nbsp;&nbsp;&nbsp;&nbsp;</strong></span></td>
-        </tr>
-          <tr>
             <td width="129" height="40" align="center"><span class="style3"></span></td>
-            <td height="40" align="left" class="style5" style="padding-left:8px;">Closing Balance<?php $v_cr_amount=array_sum($v_cr)+$v_opn_cr;
+            <td height="40" align="left" class="style1" style="padding-left:8px;">Closing balance<?php $v_cr_amount=array_sum($v_cr)+$v_opn_cr;
 			$v_dr_amount=array_sum($v_dr)+$v_opn_dr; $v_clsng_bal=$v_cr_amount-$v_dr_amount?></td>
             <td height="40" align="right" valign="middle" class="style1"> <strong>
 			<?php if($v_clsng_bal>0) { echo $v_clsng_bal.'.00'; } else { echo '0.00'; } ?>&nbsp;&nbsp;&nbsp;</strong></td>

@@ -1,4 +1,6 @@
-<?php require_once('Connections/pushpanjali.php'); ?>
+<?php 
+ header('Content-type: text/html; charset=utf-8');
+require_once('Connections/pushpanjali.php'); ?>
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -42,6 +44,9 @@ $query_r_view_voucher = "SELECT * FROM voucher WHERE id='".$_GET['id']."'";
 $r_view_voucher = mysql_query($query_r_view_voucher, $pushpanjali) or die(mysql_error());
 $row_r_view_voucher = mysql_fetch_assoc($r_view_voucher);
 $totalRows_r_view_voucher = mysql_num_rows($r_view_voucher);
+
+
+
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -55,32 +60,67 @@ $totalRows_r_view_voucher = mysql_num_rows($r_view_voucher);
 </head>
 
 <body  onLoad="window.print();">
-<p>&nbsp;</p>
-<p><br />
-  <br />
-</p>
-<table width="80%" border="1" align="center" cellspacing="0">
+<style type="text/css">
+.letter {
+font-family:"kartika";
+font-size:8px;
+letter-spacing:2px;
+line-height:20px;
+}
+@font-face
+{
+font-family: "kartika";
+src: url('fonts/kartika.ttf');
+}
+.english
+{
+font-family:"Arial";
+font-size:6px;
+letter-spacing:2px;
+line-height:20px;
+}
+	</style>
+  
+  
+  <table width="500" border="0" cellpadding="0" cellspacing="0">
   <tr>
-    <td><span class="style3">തിയതി</span></td>
-    <td><span class="style3"><?php echo echotomysql($row_r_view_voucher['voucher_date']);  ?></span></td>
+    <td width="275" height="110">&nbsp;</td>
+    <td width="125">&nbsp;</td>
+    <td width="100">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="275" height="65" align="left" valign="middle" class="letter">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Voucher </br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	
+	<?php $v_vou_id=$row_r_view_voucher['purpose']; include('inc_voucher.php');  echo $v_voucher_name;  ?>        </td>
+    <td width="125" height="65">&nbsp;</td>
+    <td width="100" height="65" class="letter"><?php echo echotomysql($row_r_view_voucher['voucher_date']);?><br />
+<br />
+<?php echo $row_r_view_voucher['id']; ?></td>
+  </tr>
+  <tr>
+    <td height="120" colspan="3" align="left" valign="middle">
+    <table width="500" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+    <td width="300" height="25" align="left" valign="middle" class="letter">
+	<?php echo $row_r_view_voucher['name']; ?><br />
+    <?php echo $row_r_view_voucher['address']; ?><br />
+	<?php echo $row_r_view_voucher['description'];?>
+</td>
+    <td width="100" height="25" align="middle" valign="top" class="letter">
+     <?php  echo $row_r_view_voucher['amount']; ?>
+    </td>
+  </tr>
+</table>
+	</td>
+  </tr>
+
+  <tr>
+    <td height="60">&nbsp;</td>
+    <td height="60">&nbsp;</td>
+    <td height="60" align="middle" valign="bottom" class="letter"><?php  echo $row_r_view_voucher['amount']; ?></td>
   </tr>
  
-    <tr>
-      <td><span class="style3">പേര്</span></td>
-      <td><span class="style3"><?php echo $row_r_view_voucher['name']; ?></span></td>
-  </tr>
-    <tr>
-      <td><span class="style3">വിലാസം</span></td>
-      <td><span class="style3"><?php echo $row_r_view_voucher['address']; ?></span></td>
-  </tr>
-    <tr>
-      <td><span class="style3">ആവശ്യം</span></td>
-      <td><span class="style3"><?php echo $row_r_view_voucher['purpose']; ?></span></td>
-  </tr>
-    <tr>
-      <td><span class="style3">രൂപ</span></td>
-      <td><span class="style3"><?php echo $row_r_view_voucher['amount']; ?></span></td>
-  </tr>
 </table>
 </body>
 </html>

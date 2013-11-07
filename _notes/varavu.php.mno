@@ -1,4 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<info>
-	<infoitem key="UD_r_report" value="name:id;datatype:int,name:name;datatype:string,name:star;datatype:int,name:amount;datatype:int,name:pooja;datatype:int,name:vazhipadu_date;datatype:date,name:status;datatype:int,name:booking_date;datatype:date,name:receipt_number;datatype:int" />
-</info>

@@ -1,4 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<info>
-	<infoitem key="UD_r_load_star" value="name:id;datatype:int,name:starname;datatype:string" />
-</info>
