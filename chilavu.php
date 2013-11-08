@@ -134,6 +134,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
         </tr>
   <tr>
     <td align="right" valign="middle">
+	<?php if($totalRows_r_view_voucher>0) { ?>
     <div class="overflow_scroll" style="height:400px; width:858px" id="report_div" >
       <table width="833" border="0" align="left" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
           <tr>
@@ -177,7 +178,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
            
           </table>
     </div>
-      
+      <?php } ?>
      </td>
   </tr>  
 </table>

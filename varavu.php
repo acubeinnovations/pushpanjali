@@ -131,9 +131,9 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
     <td align="right" valign="middle">
     <div class="overflow_scroll" style="height:400px; width:858px" id="report_div" >
       <?php if ($totalRows_r_report > 0) { // Show if recordset not empty ?>
-             <table width="1125" border="0" align="right" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
+             <table width="838" border="0" align="right" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
                <tr class="style1">
-                 <td width="50" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong>No</strong></td>
+                 <td width="50" align="centre" valign="middle" style="border-bottom:1px solid #999999;"><strong>No</strong></td>
                  <td width="200" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;">&nbsp;&nbsp;<strong><span class="style1">Name</span></strong></td>
                 <td width="150" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Pooja</span></strong></td>
                 <td width="200" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Star</span></strong></td>
@@ -144,7 +144,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                 </tr>
                <?php do { ?>
                  <tr class="style1">
-                   <td width="200" align="left" valign="middle"><?php echo $row_r_report['receipt_number']; ?></td>
+                   <td width="50" align="centre" valign="middle"><?php echo $row_r_report['receipt_number']; ?></td>
                    <td width="200" height="30" align="left" valign="middle">&nbsp;&nbsp;<?php echo $row_r_report['name']; ?></td>
                    <td width="200" height="30" align="left" valign="middle"><?php $v_pooja_id=$row_r_report['pooja'];
 				   include('inc_pooja.php'); echo $v_pooja_name; ?></td>

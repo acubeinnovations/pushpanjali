@@ -228,13 +228,13 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
           </tr>
           <?php } else {?>
           <tr>
-            <td height="30" rowspan="2" align="center" style="border-bottom:1px solid #999999;"><?php echo date('d-m-Y'); ?></td>
-            <td height="30" align="left" valign="middle" class="style1" style="padding-left:8px; font-family: Arial, Helvetica, sans-serif;"><span class="style8">വരവ് - വഴിപാടുകള്‍ </span></td>
+            <td height="30" rowspan="2" align="center" style="border-bottom:1px solid #999999;" class="style1"><?php echo date('d-m-Y'); ?></td>
+            <td height="30" align="left" valign="middle" class="style1" style="padding-left:8px; font-family: Arial, Helvetica, sans-serif;"><span class="style1">വരവ് - വഴിപാടുകള്‍ </span></td>
             <td height="15" align="right" valign="middle" class="style1"><?php echo $v_cr[]="0.00"; ?>&nbsp;&nbsp;&nbsp;&nbsp;</td>
             <td height="15" align="right" valign="middle" class="style1">0.00&nbsp;&nbsp;&nbsp;&nbsp;</td>
           </tr>
           <tr>
-            <td height="30" align="left" valign="middle" class="style1" style="padding-left:8px; border-bottom:1px solid #999999; font-family: Arial, Helvetica, sans-serif;"><span class="style8">ചിലവ് - വൌച്ചറുകള്‍</span></td>
+            <td height="30" align="left" valign="middle" class="style1" style="padding-left:8px; border-bottom:1px solid #999999; font-family: Arial, Helvetica, sans-serif;"><span class="style1">ചിലവ് - വൌച്ചറുകള്‍</span></td>
             <td height="15" align="right" valign="middle" class="style1" style="border-bottom:1px solid #999999;">0.00&nbsp;&nbsp;&nbsp;&nbsp;</td>
             <td height="15" align="right" valign="middle" class="style1" style="border-bottom:1px solid #999999;">
             

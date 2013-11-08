@@ -115,7 +115,7 @@ return($f_var_timestamp);
               </td>
               </tr>
             <tr class="style1">
-              <td height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;">&nbsp;&nbsp;<strong>Pooja</strong></td>
+              <td height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;">&nbsp;&nbsp;&nbsp;&nbsp;<strong>Pooja</strong></td>
               <td width="100" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style3">Quantity</span></strong></td>
               <td width="100" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style3">Unit Rate</span></strong></td>
               <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong>Total Amount</strong></td>
@@ -136,6 +136,14 @@ return($f_var_timestamp);
                 <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1"><?php echo $v_pooja_bhogam_kazakam*$row_r_report['SUM(quantity)']; ?></td>
                 </tr>
               <?php } while ($row_r_report = mysql_fetch_assoc($r_report)); ?>
+			  <tr>
+                <td height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1">&nbsp;&nbsp;&nbsp; Total </td>
+                <td width="100" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1">&nbsp;</td>
+                <td width="100" height="30" align="left" style="border-bottom:1px solid #999999;" valign="middle" class="style1">&nbsp;</td>
+                <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1">&nbsp;</td>
+                <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1">&nbsp;</td>
+                <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1">&nbsp;</td>
+                </tr>
             </table>
           <?php } // Show if recordset not empty ?>
         </div>
