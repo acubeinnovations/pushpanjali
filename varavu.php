@@ -54,6 +54,60 @@ $f_var_year = $f_date_array[2];
 $f_var_timestamp =$f_var_year.'-'.$f_var_month.'-'.$f_var_day ;
 return($f_var_timestamp);
 }
+
+
+ob_start();
+if (isset($_GET["excel"]) ){
+	header("Content-type: application/vnd.ms-excel");
+	header("Content-Disposition: attachment; filename=daily_income_report_".date("d-m-Y",strtotime($v_date)).".xls");
+	header("Cache-Control: cache, must-revalidate");
+	header("Pragma: public"); 
+	
+}
+
+?>
+      <?php if ($totalRows_r_report > 0) { // Show if recordset not empty ?>
+             <table width="838" border="0" align="right" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
+               <tr class="style1">
+                 <td width="50" align="centre" valign="middle" style="border-bottom:1px solid #999999;"><strong>No</strong></td>
+                 <td width="200" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;">&nbsp;&nbsp;<strong><span class="style1">Name</span></strong></td>
+                <td width="150" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Pooja</span></strong></td>
+                <td width="200" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Star</span></strong></td>
+                <td width="100" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Amount</span></strong></td>
+                <td width="75" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Edit</span></strong></td>
+                <td width="75" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Delete</span></strong></td>
+                <td width="75" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong>Print</strong></td>
+                </tr>
+               <?php do { ?>
+                 <tr class="style1">
+                   <td width="50" align="centre" valign="middle"><?php echo $row_r_report['receipt_number']; ?></td>
+                   <td width="200" height="30" align="left" valign="middle">&nbsp;&nbsp;<?php echo $row_r_report['name']; ?></td>
+                   <td width="200" height="30" align="left" valign="middle"><?php $v_pooja_id=$row_r_report['pooja'];
+				   include('inc_pooja.php'); echo $v_pooja_name; ?></td>
+                   <td width="200" height="30" align="left" valign="middle"><?php $v_star=$row_r_report['star'];
+				  include('star_name.php'); echo $v_starname; ?></td>
+                   <td width="100" height="30" align="left" valign="middle"><?php echo $v_amts[]=$row_r_report['amount']; ?></td>
+                   <td width="75" height="30" align="left" valign="middle"><a href="#" onclick="MM_openBrWindow('edit_report.php?id=<?php echo $row_r_report['id']; ?>','','width=400,height=400')"><img src="images/edit.png" width="20" border="0" /></a></td>
+                   <td width="75" height="30" align="left" valign="middle"><a href="delete_report.php?id=<?php echo $row_r_report['id']; ?>"><img src="images/delete.png" width="20" border="0" /></a></td>
+                   <td width="75" align="left" valign="middle" onclick="MM_openBrWindow('print_vazhipadu.php?receipt_number=<?php echo $row_r_report['receipt_number']; ?>','','width=600,height=400')" ><a href="#">Print</a></td>
+                   </tr><?php } while ($row_r_report = mysql_fetch_assoc($r_report)); ?>
+                 <tr class="style1">
+                   <td align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
+                   <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;&nbsp;<strong>Total</strong></td>
+                   <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
+                   <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
+                   <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;"><strong><?php echo array_sum($v_amts); ?>&nbsp;</strong></td>
+                   <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
+                   <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
+                   <td align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
+                 </tr>
+                 
+                </table>
+             <?php } // Show if recordset not empty ?>
+<?php
+
+$report = ob_get_contents();
+ob_end_clean();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -120,9 +174,15 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
           <form id="form1" name="form1" method="post" action="home.php">
           </form>
             <td height="50" align="center" valign="middle" bgcolor="#FFFFFF" class="style1">
+            <form id="form1" name="form1" method="get" action="varavu.php">	
               <label><span class="style5">Daily Report on <?php echo $v_date; ?></span>&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="button" class="style1" onclick="window.print();"  value="Print"/>
-                </label>                      </td>
+                </label>      
+				<input type="submit" name="excel" id="excel" value="Print to Excel" />
+				<input type="hidden" name="date" value="<?php echo $v_date; ?>" /> 
+				</form>
+
+                </td>
             </tr>       
             </table>
             </td>
@@ -130,44 +190,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
   <tr>
     <td align="right" valign="middle">
     <div class="overflow_scroll" style="height:400px; width:858px" id="report_div" >
-      <?php if ($totalRows_r_report > 0) { // Show if recordset not empty ?>
-             <table width="838" border="0" align="right" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
-               <tr class="style1">
-                 <td width="50" align="centre" valign="middle" style="border-bottom:1px solid #999999;"><strong>No</strong></td>
-                 <td width="200" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;">&nbsp;&nbsp;<strong><span class="style1">Name</span></strong></td>
-                <td width="150" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Pooja</span></strong></td>
-                <td width="200" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Star</span></strong></td>
-                <td width="100" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Amount</span></strong></td>
-                <td width="75" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Edit</span></strong></td>
-                <td width="75" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Delete</span></strong></td>
-                <td width="75" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong>Print</strong></td>
-                </tr>
-               <?php do { ?>
-                 <tr class="style1">
-                   <td width="50" align="centre" valign="middle"><?php echo $row_r_report['receipt_number']; ?></td>
-                   <td width="200" height="30" align="left" valign="middle">&nbsp;&nbsp;<?php echo $row_r_report['name']; ?></td>
-                   <td width="200" height="30" align="left" valign="middle"><?php $v_pooja_id=$row_r_report['pooja'];
-				   include('inc_pooja.php'); echo $v_pooja_name; ?></td>
-                   <td width="200" height="30" align="left" valign="middle"><?php $v_star=$row_r_report['star'];
-				  include('star_name.php'); echo $v_starname; ?></td>
-                   <td width="100" height="30" align="left" valign="middle"><?php echo $v_amts[]=$row_r_report['amount']; ?></td>
-                   <td width="75" height="30" align="left" valign="middle"><a href="#" onclick="MM_openBrWindow('edit_report.php?id=<?php echo $row_r_report['id']; ?>','','width=400,height=400')"><img src="images/edit.png" width="20" border="0" /></a></td>
-                   <td width="75" height="30" align="left" valign="middle"><a href="delete_report.php?id=<?php echo $row_r_report['id']; ?>"><img src="images/delete.png" width="20" border="0" /></a></td>
-                   <td width="75" align="left" valign="middle" onclick="MM_openBrWindow('print_vazhipadu.php?id=<?php echo $row_r_report['id']; ?>','','width=600,height=400')" onfocus="MM_openBrWindow('print_vazhipadu.php?id=<?php echo $row_r_report['id']; ?>','','width=600,height=400')"><a href="#">Print</a></td>
-                   </tr><?php } while ($row_r_report = mysql_fetch_assoc($r_report)); ?>
-                 <tr class="style1">
-                   <td align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
-                   <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;&nbsp;<strong>Total</strong></td>
-                   <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
-                   <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
-                   <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;"><strong><?php echo array_sum($v_amts); ?>&nbsp;</strong></td>
-                   <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
-                   <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
-                   <td align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
-                 </tr>
-                 
-                </table>
-             <?php } // Show if recordset not empty ?>
+		<?php echo $report; ?>
     </div>
       
      </td>

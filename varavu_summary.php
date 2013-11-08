@@ -31,17 +31,24 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
   return $theValue;
 }
 }
-if(isset($_GET["date"]) && trim($_GET["date"])!=""){
-	$v_date = $_GET['date'];
+if(isset($_POST["from_date"]) && trim($_POST["from_date"])!=""){
+	$v_from = $_POST['from_date'];
 }else{
-	$v_date = date("Y-m-d");
+	$v_from = date("Y-m-1");
 	
 }
 
 
+if(isset($_POST["to_date"]) &&  trim($_POST["to_date"])!=""){
+	$v_to = $_POST['to_date'];
+}else{
+	$v_to = date("Y-m-d");	
+} 
+
+
 mysql_query("SET NAMES utf8");
 mysql_select_db($database_pushpanjali, $pushpanjali);
-$query_r_report = "SELECT pooja, SUM(quantity), SUM(amount*quantity) FROM vazhipadu WHERE vazhipadu_date='$v_date' AND status='0' GROUP BY pooja ";
+$query_r_report = "SELECT pooja, SUM(quantity), SUM(amount*quantity) FROM vazhipadu WHERE vazhipadu_date BETWEEN '$v_from' AND '$v_to' AND status='0' GROUP BY pooja ";
 $r_report = mysql_query($query_r_report, $pushpanjali) or die(mysql_error());
 $row_r_report = mysql_fetch_assoc($r_report);
 $totalRows_r_report = mysql_num_rows($r_report);
@@ -67,6 +74,21 @@ return($f_var_timestamp);
 -->
 </style>
 <link type="text/css" href="css/print.css" rel="stylesheet" media="print" />
+<style type="text/css" media="screen">
+
+  #divToPrint{
+    display:none;
+  }
+  
+</style>
+
+<style type="text/css" media="print">
+
+  #divnoprint{
+    display:none;
+  }
+
+</style>
 <title>Puthenkavu Kshetram</title>
 <link href="*.css" rel="stylesheet" type="text/css" />
 <link href="style.css" rel="stylesheet" type="text/css" />
@@ -109,8 +131,8 @@ return($f_var_timestamp);
         <?php if ($totalRows_r_report > 0) { // Show if recordset not empty ?>
           <table width="838" border="0" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
             <tr>
-              <td height="50" colspan="6" align="center" valign="middle" style="border-bottom:1px solid #999999;">വരവ് - <?php echo $v_date; ?>
-              <label><input type="button" class="style1" onclick="window.print();"  value="Print"/>
+              <td height="50" colspan="6" align="center" valign="middle" style="border-bottom:1px solid #999999;">വരവ്  :  <?php echo date("d/m/Y",strtotime($v_from))." to ".date("d/m/Y",strtotime($v_to)); ?><span id="divnoprint" >
+              <label><input type="button" class="style1" onclick="window.print();"  value="Print"/> </span>
                 </label>
               </td>
               </tr>
@@ -122,7 +144,11 @@ return($f_var_timestamp);
               <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong>Bhogam Melsanthi</strong></td>
               <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong>Bhogam Kayakam</strong></td>
               </tr>
-            <?php do { ?>
+            <?php 
+					$total_amount = 0;
+					$total_amount_bhogam = 0;
+					$total_amount_kazakam = 0;
+				 do { ?>
               <tr>
                 <td height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;">&nbsp;&nbsp;
                   <span class="style1">
@@ -131,18 +157,18 @@ return($f_var_timestamp);
                     </span></td>
                 <td width="100" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1"><?php echo $row_r_report['SUM(quantity)']; ?></td>
                 <td width="100" height="30" align="left" style="border-bottom:1px solid #999999;" valign="middle" class="style1"><?php echo $v_pooja_rate; ?>&nbsp;</td>
-                <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1"><?php echo $row_r_report['SUM(amount*quantity)']; ?></td>
-                <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1"><?php echo $v_pooja_bhogam_melsanthi*$row_r_report['SUM(quantity)']; ?></td>
-                <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1"><?php echo $v_pooja_bhogam_kazakam*$row_r_report['SUM(quantity)']; ?></td>
+                <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1"><?php echo $row_r_report['SUM(amount*quantity)']; $total_amount = $total_amount + $row_r_report['SUM(amount*quantity)']; ?></td>
+                <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1"><?php echo $v_pooja_bhogam_melsanthi*$row_r_report['SUM(quantity)']; $total_amount_bhogam = $total_amount_bhogam +($v_pooja_bhogam_melsanthi*$row_r_report['SUM(quantity)']) ;?></td>
+                <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1"><?php echo $v_pooja_bhogam_kazakam*$row_r_report['SUM(quantity)']; $total_amount_kazakam = $total_amount_kazakam + ($v_pooja_bhogam_kazakam*$row_r_report['SUM(quantity)']); ?></td>
                 </tr>
               <?php } while ($row_r_report = mysql_fetch_assoc($r_report)); ?>
 			  <tr>
                 <td height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1">&nbsp;&nbsp;&nbsp; Total </td>
                 <td width="100" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1">&nbsp;</td>
                 <td width="100" height="30" align="left" style="border-bottom:1px solid #999999;" valign="middle" class="style1">&nbsp;</td>
-                <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1">&nbsp;</td>
-                <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1">&nbsp;</td>
-                <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1">&nbsp;</td>
+                <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1"><?php echo $total_amount; ?></td>
+                <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1"><?php echo $total_amount_bhogam; ?></td>
+                <td width="100" align="left" valign="middle" style="border-bottom:1px solid #999999;" class="style1"><?php echo $total_amount_kazakam; ?></td>
                 </tr>
             </table>
           <?php } // Show if recordset not empty ?>

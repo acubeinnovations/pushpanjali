@@ -166,10 +166,10 @@ body {
 					$totalRows_r_view_pooja = mysql_num_rows($r_view_pooja);
 
 				 ?></span></td>
-               <td height="50" ><?php echo $v_pooja_rate[]=$row_r_view_pooja['rate']; ?></td>
-                <td height="50" ><?php echo $v_count[]=$row_r_view_pooja['COUNT(vazhipadu.pooja)']; ?></td>
-                <td height="50" ><?php echo $v_total_amt[]=$row_r_view_pooja['rate']*$row_r_view_pooja['COUNT(vazhipadu.pooja)'];?></td>
-                <td height="50" ><?php echo $v_mel_bhogam[]= $row_r_view_pooja['COUNT(vazhipadu.pooja)']*$row_r_view_pooja['bhogam_melsanthi']?></td>
+               <td height="50" ><?php echo $v_pooja_rate=$row_r_view_pooja['rate']; ?></td>
+                <td height="50" ><?php echo $v_count=$row_r_view_pooja['COUNT(vazhipadu.pooja)']; ?></td>
+                <td height="50" ><?php echo $v_total_amt=$row_r_view_pooja['rate']*$row_r_view_pooja['COUNT(vazhipadu.pooja)'];?></td>
+                <td height="50" ><?php echo $v_mel_bhogam= $row_r_view_pooja['COUNT(vazhipadu.pooja)']*$row_r_view_pooja['bhogam_melsanthi']?></td>
                 <td height="50" ><?php echo $v_bhogam_kazhakam[]=$row_r_view_pooja['COUNT(vazhipadu.pooja)']*$row_r_view_pooja['bhogam_kazakam']; ?></td>
               </tr>
               <?php } while ($row_r_report = mysql_fetch_assoc($r_report)); ?>

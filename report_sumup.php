@@ -1,5 +1,4 @@
-<?php 
- header('Content-type: text/html; charset=utf-8');
+<?php  header('Content-type: text/html; charset=utf-8');
 require_once('Connections/pushpanjali.php');
 require_once('calendar/classes/tc_calendar.php');
 if (!function_exists("GetSQLValueString")) {
@@ -68,116 +67,17 @@ $f_var_timestamp =$f_var_year.'-'.$f_var_month.'-'.$f_var_day ;
 return($f_var_timestamp);
 }
 
+ob_start();
+if (isset($_POST["excel"]) ){
+	header("Content-type: application/vnd.ms-excel");
+	header("Content-Disposition: attachment; filename=monthly_summary.xls");
+	header("Cache-Control: cache, must-revalidate");
+	header("Pragma: public"); 
+	
+}
+
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<style type="text/css">
-<!--
-.pus {
-	color: #C00;
-}
--->
-</style>
-<link type="text/css" href="css/print.css" rel="stylesheet" media="print" />
-<title>Puthenkavu Kshetram</title>
-<link href="*.css" rel="stylesheet" type="text/css" />
-<link href="style.css" rel="stylesheet" type="text/css" />
 
-
-<script type="text/javascript">
-<!--
-function MM_openBrWindow(theURL,winName,features) { //v2.0
-  window.open(theURL,winName,features);
-}
-//-->
-</script>
-<link href="calendar/calendar.css" rel="stylesheet" type="text/css" />
-<script language="javascript" src="calendar/calendar.js"></script>
-
-<style type="text/css">
-<!--
-.style8 {font-size: 14px}
-.style9 {color: #585858}
--->
-</style>
-</head>
-
-<body marginheight="0" marginwidth="0" topmargin="0" bottommargin="0" rightmargin="0" leftmargin="0">
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td height="53" align="left" valign="top" background="images/bg.PNG">
-    <table width="852" border="0" align="left" cellpadding="0" cellspacing="1">
-      <tr class="menu noprint" >
-        <td width="81" height="41" align="center" valign="middle"><a href="home.php" class="menu">Home</a></td>
-        <td width="78" height="41" align="center" valign="middle"><a href="star.php" class="menu">Star</a></td>
-        <td width="81" height="41" align="center" valign="middle"><a href="pooja.php" class="menu">Pooja</a></td>
-        <td width="127" height="41" align="center" valign="middle"><a href="vazhipadu.php" class="menu">Vazhipadu</a></td>
-        <td width="97" height="41" align="center" valign="middle"><a href="voucher.php" class="menu">Vouchers</a></td>
-        <td width="75" height="41" align="center" valign="middle"><a href="report_sumup.php" class="menu_active">Report</a></td>
-        <td width="114" height="41" align="center" valign="middle"><a href="logout.php" class="menu">Logout</a></td>
-      </tr>
-    </table>
-    </td>
-  </tr>
-  <tr>
-    <td height="400" align="left" valign="top">
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-  		<tr>
-   		  <td width="70%" height="600" align="left" valign="top">
-   			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-			  <tr>
-          				<td height="60" colspan="7" align="center" valign="middle">
-                        <h1 class="pus noprint">പുത്തന്‍കാവ് ചാരപറമ്പ്‌ ഭഗവതി ക്ഷേത്രം</h1>
-            			</td> 
-   			  </tr>
-        <tr>
-        	<td align="right"> 
-            <table width="855" border="0" align="right" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
-          <form id="form1" name="form1" method="post" action="report_sumup.php"><tr class="noprint">
-            <td height="50" colspan="4" align="center" valign="middle" bgcolor="#FFFFFF" class="style1">Search &nbsp;&nbsp;&nbsp; From &nbsp;&nbsp;&nbsp;
-<?php
-	  $myCalendar = new tc_calendar("from_date", true, false);
-	  $myCalendar->setIcon("calendar/images/iconCalendar.gif");
-	  //$myCalendar->setDate(date('d'), date('m'), date('Y'));
-	  $myCalendar->setDate(date('d',strtotime($v_from)), date('m',strtotime($v_from)), date('Y',strtotime($v_from)));
-	  
-	  $myCalendar->setPath("calendar/");
-	  $myCalendar->setYearInterval(2000, 2015);
-	  $myCalendar->dateAllow('2008-05-13', '2015-03-01');
-	  $myCalendar->setDateFormat('j F Y');
-	  $myCalendar->writeScript();
-	  ?>
-&nbsp;&nbsp;&nbsp;            To&nbsp;&nbsp;&nbsp;
-<?php
-	  $myCalendar = new tc_calendar("to_date", true, false);
-	  $myCalendar->setIcon("calendar/images/iconCalendar.gif");
-	  //$myCalendar->setDate(date('d'), date('m'), date('Y'));
-	  $myCalendar->setDate(date('d',strtotime($v_to)), date('m',strtotime($v_to)), date('Y',strtotime($v_to)));
-	  $myCalendar->setPath("calendar/");
-	  $myCalendar->setYearInterval(2000, 2015);
-	  $myCalendar->dateAllow('2008-05-13', '2015-03-01');
-	  $myCalendar->setDateFormat('j F Y');
-	  $myCalendar->writeScript();
-	  ?>                          
-              <label>
-                 &nbsp;&nbsp;&nbsp;
-                 <input type="submit" name="search" id="search" value="Submit" />
-              </label>            </td>
-            </form>
-            <td height="50" align="center" valign="middle" bgcolor="#FFFFFF">
-              <label><input type="button" class="style1" onclick="window.print();"  value="Print"/>
-
-                </label>                      </td>
-            </tr>       
-
-            </table>
-            </td>
-        </tr>
-  <tr>
-    <td align="right" valign="middle">
-    <div class="overflow_scroll" style="height:400px; width:855px" id="report_div" >
     <table width="838" border="0" align="right" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
         <tr>
           <td width="129" height="40" align="center" style="border-bottom:1px solid #999999;"><span class="style5">Date</span></td>
@@ -283,6 +183,125 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
           </tr>
       </table>
      
+
+<?php
+$report = ob_get_contents();
+ob_end_clean();
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+<!--
+.pus {
+	color: #C00;
+}
+-->
+</style>
+<link type="text/css" href="css/print.css" rel="stylesheet" media="print" />
+<title>Puthenkavu Kshetram</title>
+<link href="*.css" rel="stylesheet" type="text/css" />
+<link href="style.css" rel="stylesheet" type="text/css" />
+
+
+<script type="text/javascript">
+<!--
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+  window.open(theURL,winName,features);
+}
+//-->
+</script>
+<link href="calendar/calendar.css" rel="stylesheet" type="text/css" />
+<script language="javascript" src="calendar/calendar.js"></script>
+
+<style type="text/css">
+<!--
+.style8 {font-size: 14px}
+.style9 {color: #585858}
+-->
+</style>
+</head>
+
+<body marginheight="0" marginwidth="0" topmargin="0" bottommargin="0" rightmargin="0" leftmargin="0">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td height="53" align="left" valign="top" background="images/bg.PNG">
+    <table width="852" border="0" align="left" cellpadding="0" cellspacing="1">
+      <tr class="menu noprint" >
+        <td width="81" height="41" align="center" valign="middle"><a href="home.php" class="menu">Home</a></td>
+        <td width="78" height="41" align="center" valign="middle"><a href="star.php" class="menu">Star</a></td>
+        <td width="81" height="41" align="center" valign="middle"><a href="pooja.php" class="menu">Pooja</a></td>
+        <td width="127" height="41" align="center" valign="middle"><a href="vazhipadu.php" class="menu">Vazhipadu</a></td>
+        <td width="97" height="41" align="center" valign="middle"><a href="voucher.php" class="menu">Vouchers</a></td>
+        <td width="75" height="41" align="center" valign="middle"><a href="report_sumup.php" class="menu_active">Report</a></td>
+        <td width="114" height="41" align="center" valign="middle"><a href="logout.php" class="menu">Logout</a></td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+  <tr>
+    <td height="400" align="left" valign="top">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  		<tr>
+   		  <td width="70%" height="600" align="left" valign="top">
+   			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			  <tr>
+          				<td height="60" colspan="7" align="center" valign="middle">
+                        <h1 class="pus noprint">പുത്തന്‍കാവ് ചാരപറമ്പ്‌ ഭഗവതി ക്ഷേത്രം</h1>
+            			</td> 
+   			  </tr>
+        <tr>
+        	<td align="right"> 
+            <table width="855" border="0" align="right" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
+          <form id="form1" name="form1" method="post" action="report_sumup.php"><tr class="noprint">
+            <td height="50" colspan="4" align="center" valign="middle" bgcolor="#FFFFFF" class="style1">Search &nbsp;&nbsp;&nbsp; From &nbsp;&nbsp;&nbsp;
+<?php
+	  $myCalendar = new tc_calendar("from_date", true, false);
+	  $myCalendar->setIcon("calendar/images/iconCalendar.gif");
+	  //$myCalendar->setDate(date('d'), date('m'), date('Y'));
+	  $myCalendar->setDate(date('d',strtotime($v_from)), date('m',strtotime($v_from)), date('Y',strtotime($v_from)));
+	  
+	  $myCalendar->setPath("calendar/");
+	  $myCalendar->setYearInterval(2000, 2015);
+	  $myCalendar->dateAllow('2008-05-13', '2015-03-01');
+	  $myCalendar->setDateFormat('j F Y');
+	  $myCalendar->writeScript();
+	  ?>
+&nbsp;&nbsp;&nbsp;            To&nbsp;&nbsp;&nbsp;
+<?php
+	  $myCalendar = new tc_calendar("to_date", true, false);
+	  $myCalendar->setIcon("calendar/images/iconCalendar.gif");
+	  //$myCalendar->setDate(date('d'), date('m'), date('Y'));
+	  $myCalendar->setDate(date('d',strtotime($v_to)), date('m',strtotime($v_to)), date('Y',strtotime($v_to)));
+	  $myCalendar->setPath("calendar/");
+	  $myCalendar->setYearInterval(2000, 2015);
+	  $myCalendar->dateAllow('2008-05-13', '2015-03-01');
+	  $myCalendar->setDateFormat('j F Y');
+	  $myCalendar->writeScript();
+	  ?>                          
+              <label>
+                 &nbsp;&nbsp;&nbsp;
+                 <input type="submit" name="search" id="search" value="Submit" />
+              </label>            </td>
+           
+            <td height="50" align="center" valign="middle" bgcolor="#FFFFFF">
+              <label><input type="button" class="style1" onclick="window.print();"  value="Print"/></label>
+                	<input type="submit" name="excel" id="excel" value="Print to Excel" />
+               
+                                     </td>
+            </tr>       
+ </form>
+            </table>
+            </td>
+        </tr>
+  <tr>
+    <td align="right" valign="middle">
+    <div class="overflow_scroll" style="height:400px; width:855px" id="report_div" >
+
+		<?php echo $report; ?>
+
     </div>
       
      </td>
