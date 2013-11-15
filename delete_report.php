@@ -35,7 +35,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if (isset($_GET['id'])) {
-  $updateSQL = sprintf("UPDATE vazhipadu SET status=%s WHERE receipt_number=%s",
+  $updateSQL = sprintf("UPDATE vazhipadu SET status=%s WHERE id=%s",
                        GetSQLValueString(1, "int"),
                        GetSQLValueString($_GET['id'], "int"));
 
@@ -49,7 +49,7 @@ if (isset($_GET['id'])) {
 
   mysql_select_db($database_pushpanjali, $pushpanjali);
   $Result1 = mysql_query($updateSQL1, $pushpanjali) or die(mysql_error()); 
-  
+
 
   $updateGoTo = "report_sumup.php";
   if (isset($_SERVER['QUERY_STRING'])) {
