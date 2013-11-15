@@ -34,11 +34,13 @@ $totalRows_r_view_star = mysql_num_rows($r_view_star);
 	   if($_POST['booking']==1){
 			$v_book_date=$_POST['bck_date'];
 			$v_book_to =$_POST['bck_date'];
+			$v_date_main=$_POST['bck_date'];
 	   }
     
    }else{
 		$v_book_date=NULL;
 		$v_book_to = NULL;
+		$v_date_main=$_POST['date'];
    }
    	if($_POST['pooja']!=0 && $_POST['amount']!="")
 	{
@@ -54,7 +56,7 @@ $totalRows_r_view_star = mysql_num_rows($r_view_star);
 	{
 	if($v_name[$i]!="" && $v_star[$i]!="")
 	{
-  $v_q_string[]="('$v_name[$i]', '$v_star[$i]', '".$_POST['amount']."','$v_numbr', '".$_POST['pooja']."', '".$_POST['date']."',' $v_book_date',  '$v_book_to', '$v_receipt_no')";
+  $v_q_string[]="('$v_name[$i]', '$v_star[$i]', '".$_POST['amount']."','$v_numbr', '".$_POST['pooja']."', '$v_date_main',' $v_book_date',  '$v_book_to', '$v_receipt_no')";
   }
  }
  	$insertSQL =$insertSQL .''.implode(",", $v_q_string);

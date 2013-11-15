@@ -47,7 +47,7 @@ if(isset($_REQUEST["to_date"]) &&  trim($_REQUEST["to_date"])!=""){
 }
   mysql_query("SET NAMES utf8");
 mysql_select_db($database_pushpanjali, $pushpanjali);
-$query_r_view_voucher = "SELECT * FROM voucher WHERE voucher_date BETWEEN '$v_from' AND '$v_to' AND status='0'";
+$query_r_view_voucher = "SELECT * FROM voucher WHERE voucher_date BETWEEN '$v_from' AND '$v_to'";
 $r_view_voucher = mysql_query($query_r_view_voucher, $pushpanjali) or die(mysql_error());
 $row_r_view_voucher = mysql_fetch_assoc($r_view_voucher);
 $totalRows_r_view_voucher = mysql_num_rows($r_view_voucher);
@@ -59,6 +59,79 @@ $f_var_year = $f_date_array[2];
 $f_var_timestamp =$f_var_year.'-'.$f_var_month.'-'.$f_var_day ;
 return($f_var_timestamp);
 }
+
+
+ob_start();
+if (isset($_GET["excel"]) ){
+	header("Content-type: application/vnd.ms-excel");
+	header("Content-Disposition: attachment; filename=daily_expense_report_".date("d-m-Y",strtotime($v_from)).".xls");
+	header("Cache-Control: cache, must-revalidate");
+	header("Pragma: public"); 
+	
+}
+
+$v_amt=array();
+?>
+
+
+<table width="833" border="0" align="right" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
+          <tr>
+            <td width="54" height="30" class="style1" style="border-bottom:1px solid #999999;">No</td>
+            <td width="100" height="30" style="border-bottom:1px solid #999999;"><span class="style1"><strong>Date</strong></span></td>
+              <td width="170" height="30" style="border-bottom:1px solid #999999;"><span class="style1"><strong>Name</strong></span></td>
+              <td width="300" height="30" style="border-bottom:1px solid #999999;"><span class="style1"><strong>Purpose</strong></span></td>
+              <td width="90" height="30" style="border-bottom:1px solid #999999;"><span class="style1"><strong>Amount</strong></span></td>
+              <td width="49" height="30" align="center" valign="middle" style="border-bottom:1px solid #999999;"><span class="style1"><strong>Edit</strong></span></td>
+              <td width="49" height="30" align="center" valign="middle" style="border-bottom:1px solid #999999;"><span class="style1"><strong>Delete</strong></span></td>
+              <td width="55" height="30" align="center" valign="middle" style="border-bottom:1px solid #999999;"><span class="style1"><strong><!--Print--></strong></span></td>
+          </tr>
+          <?php do { ?>
+            <tr>
+              <td height="30" class="style1" style="border-bottom:1px solid #999999;"><?php echo $row_r_view_voucher['id']; ?></td>
+              <td width="100" height="30" style="border-bottom:1px solid #999999;"><span class="style1"><?php echo echotomysql($row_r_view_voucher['voucher_date']); ?></span></td>
+              <td width="200" height="30" style="border-bottom:1px solid #999999;"><span class="style1"><?php echo $row_r_view_voucher['name']; ?></span></td>
+              <td width="300" height="30" style="border-bottom:1px solid #999999;"><span class="style1">
+			  <?php $v_vou=$row_r_view_voucher['purpose']; include('vou_head.php'); ?></span></td>
+              <td width="90" height="30" style="border-bottom:1px solid #999999;"><span class="style1">
+			  <?php if($row_r_view_voucher['status']==1) { echo $row_r_view_voucher['amount']; } else {?>
+			  <?php  $v_amt[]=$row_r_view_voucher['amount']; echo $row_r_view_voucher['amount']; }?></span></td>
+              <td width="49" height="30" align="center" valign="middle" style="border-bottom:1px solid #999999;">
+                <span class="style1"><a href="#" onClick="MM_openBrWindow('edit_voucher.php?id=<?php echo $row_r_view_voucher['id']; ?>','','width=400,height=400')">
+              <img src="images/edit.png" width="20" border="0" /></a></span></td>
+              <td width="49" height="30" align="center" valign="middle" style="border-bottom:1px solid #999999;">
+                <span class="style1">  <?php if($row_r_view_voucher['status']==0) {?><a href="delete_voucher.php?id=<?php echo $row_r_view_voucher['id']; ?>">
+              <img src="images/delete.png" width="20" border="0" /></a><?php } else { echo "Cancelled"; }?></span></td>
+              <td width="55" height="30" align="center" valign="middle" style="border-bottom:1px solid #999999;">
+                
+                
+                <span class="style1">
+              
+                <a href="#" onClick="MM_openBrWindow('print_voucher.php?id=<?php echo $row_r_view_voucher['id']; ?>','','width=400,height=400')">
+              Print</a>
+              
+              </span></td>
+            </tr> <?php } while ($row_r_view_voucher = mysql_fetch_assoc($r_view_voucher)); ?>
+            <tr bgcolor="#F0C6C6">
+              <td height="30" >&nbsp;</td>
+              <td height="30" class="style1"><strong>Total</strong></td>
+              <td height="30">&nbsp;</td>
+              <td height="30">&nbsp;</td>
+              <td width="90" height="30" class="style1"><strong><?php echo array_sum($v_amt); ?></strong></td>
+              <td height="30" align="center" valign="middle">&nbsp;</td>
+              <td height="30" align="center" valign="middle">&nbsp;</td>
+              <td height="30" align="center" valign="middle">&nbsp;</td>
+            </tr>
+           
+          </table>
+
+
+<?php
+
+$report = ob_get_contents();
+ob_end_clean();
+
+
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -90,7 +163,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 </head>
 
 <body marginheight="0" marginwidth="0" topmargin="0" bottommargin="0" rightmargin="0" leftmargin="0">
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<table width="100%" border="0" align="right" cellpadding="0" cellspacing="0">
   <tr>
     <td height="53" align="left" valign="top" background="images/bg.PNG">
     <table width="852" border="0" align="left" cellpadding="0" cellspacing="1">
@@ -120,14 +193,16 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
         <tr>
         	<td align="right"> 
             <table width="850px" border="0" align="right" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
-          <form id="form1" name="form1" method="post" action="home.php">
-          </form>
             <td height="50" align="center" valign="middle" bgcolor="#FFFFFF" class="style1">
-            
-              <span class="style5">Daily Report as on <?php echo $v_from ; ?> &nbsp;&nbsp;&nbsp;</span>
-              </label>            
-              <label><input type="button" class="style1" onclick="window.print();"  value="Print"/>
-                </label></td>
+            <form id="form1" name="form1" method="get" action="report_sumup.php">
+              <span class="style5">Daily Report as on <?php echo $v_from; ?> &nbsp;&nbsp;&nbsp;</span>      
+              <!--<label><input type="button" class="style1" onClick="window.print();"  value="Print"/> </label>
+				<input type="submit" name="excel" id="excel" value="Print to Excel" />-->
+                <a href="xls_chilavu.php?<?php echo $v_from; ?>">Print to Excel</a>
+				<input type="hidden" name="from_date" value="2013-11-05" /> 
+				<input type="hidden" name="to_date" value="2013-11-05" /> 
+				</form>
+			</td>
             </tr>       
             </table>
             </td>
@@ -136,47 +211,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
     <td align="right" valign="middle">
 	<?php if($totalRows_r_view_voucher>0) { ?>
     <div class="overflow_scroll" style="height:400px; width:858px" id="report_div" >
-      <table width="833" border="0" align="left" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
-          <tr>
-            <td width="54" height="30" class="style1" style="border-bottom:1px solid #999999;">No</td>
-            <td width="100" height="30" style="border-bottom:1px solid #999999;"><span class="style1"><strong>Date</strong></span></td>
-              <td width="170" height="30" style="border-bottom:1px solid #999999;"><span class="style1"><strong>Name</strong></span></td>
-              <td width="300" height="30" style="border-bottom:1px solid #999999;"><span class="style1"><strong>Purpose</strong></span></td>
-              <td width="90" height="30" style="border-bottom:1px solid #999999;"><span class="style1"><strong>Amount</strong></span></td>
-              <td width="49" height="30" align="center" valign="middle" style="border-bottom:1px solid #999999;"><span class="style1"><strong>Edit</strong></span></td>
-              <td width="49" height="30" align="center" valign="middle" style="border-bottom:1px solid #999999;"><span class="style1"><strong>Delete</strong></span></td>
-              <td width="55" height="30" align="center" valign="middle" style="border-bottom:1px solid #999999;"><span class="style1"><strong><!--Print--></strong></span></td>
-          </tr>
-          <?php do { ?>
-            <tr>
-              <td height="30" class="style1" style="border-bottom:1px solid #999999;"><?php echo $row_r_view_voucher['id']; ?></td>
-              <td width="100" height="30" style="border-bottom:1px solid #999999;"><span class="style1"><?php echo echotomysql($row_r_view_voucher['voucher_date']); ?></span></td>
-              <td width="200" height="30" style="border-bottom:1px solid #999999;"><span class="style1"><?php echo $row_r_view_voucher['name']; ?></span></td>
-              <td width="300" height="30" style="border-bottom:1px solid #999999;"><span class="style1">
-			  <?php $v_vou=$row_r_view_voucher['purpose']; include('vou_head.php'); ?></span></td>
-              <td width="90" height="30" style="border-bottom:1px solid #999999;"><span class="style1"><?php echo $v_amt[]=$row_r_view_voucher['amount']; ?></span></td>
-              <td width="49" height="30" align="center" valign="middle" style="border-bottom:1px solid #999999;">
-                <span class="style1"><a href="#" onclick="MM_openBrWindow('edit_voucher.php?id=<?php echo $row_r_view_voucher['id']; ?>','','width=400,height=400')">
-              <img src="images/edit.png" width="20" border="0" /></a></span></td>
-              <td width="49" height="30" align="center" valign="middle" style="border-bottom:1px solid #999999;">
-                <span class="style1"><a href="delete_voucher.php?id=<?php echo $row_r_view_voucher['id']; ?>">
-              <img src="images/delete.png" width="20" border="0" /></a></span></td>
-              <td width="55" height="30" align="center" valign="middle" style="border-bottom:1px solid #999999;">
-                <span class="style1"><a href="#" onclick="MM_openBrWindow('print_voucher.php?id=<?php echo $row_r_view_voucher['id']; ?>','','width=400,height=400')">
-              Print</a></span></td>
-            </tr> <?php } while ($row_r_view_voucher = mysql_fetch_assoc($r_view_voucher)); ?>
-            <tr bgcolor="#F0C6C6">
-              <td height="30" >&nbsp;</td>
-              <td height="30" class="style1"><strong>Total</strong></td>
-              <td height="30">&nbsp;</td>
-              <td height="30">&nbsp;</td>
-              <td width="90" height="30" class="style1"><strong><?php echo array_sum($v_amt); ?></strong></td>
-              <td height="30" align="center" valign="middle">&nbsp;</td>
-              <td height="30" align="center" valign="middle">&nbsp;</td>
-              <td height="30" align="center" valign="middle">&nbsp;</td>
-            </tr>
-           
-          </table>
+      <?php echo $report; ?>
     </div>
       <?php } ?>
      </td>
@@ -193,8 +228,4 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 <span class="footer">All rights reserved. ® Acube Innovations Pvt Ltd. Phone: 0484 6066060.  Copyright © 2013. </span></div>
 </body>
 </html>
-<?php
-mysql_free_result($r_opng_balance);
 
-mysql_free_result($r_vaz);
-?>

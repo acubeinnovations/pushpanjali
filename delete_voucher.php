@@ -51,7 +51,7 @@ if (isset($_GET['id'])) {
   $Result1 = mysql_query($updateSQL1, $pushpanjali) or die(mysql_error()); 
   
 
-  $updateGoTo = "voucher.php";
+  $updateGoTo = "report_sumup.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
     $updateGoTo .= $_SERVER['QUERY_STRING'];

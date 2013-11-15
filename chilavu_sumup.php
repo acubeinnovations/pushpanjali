@@ -88,7 +88,13 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 </script>
 <link href="calendar/calendar.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="calendar/calendar.js"></script>
+<script >
+function printxl(){
 
+       document.form1.action="xls_varavu.php";
+
+}
+</script>
 </head>
 
 <body marginheight="0" marginwidth="0" topmargin="0" bottommargin="0" rightmargin="0" leftmargin="0">
@@ -123,13 +129,19 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
         	<td align="right"> 
             <table width="850px" border="0" align="right" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
           <form id="form1" name="form1" method="post" action="home.php">
-          </form>
+          
               <td height="50" align="center" valign="middle" bgcolor="#FFFFFF" class="style1">
             
-              <span class="style5">Monthly Report as on <?php echo date("M"); ?> &nbsp;&nbsp;&nbsp;</span>
+              <span class="style5">Monthly Report as on <?php echo date("M-Y"); ?> &nbsp;&nbsp;&nbsp;</span>
               </label>            
-              <label><input type="button" class="style1" onclick="window.print();"  value="Print"/>
-                </label></td>
+              <!--<label><input type="button" class="style1" onclick="window.print();"  value="Print"/>
+                </label>-->
+                <span id="divnoprint" >
+              <!--<label><input type="button" class="style1" onclick="window.print();"  value="Print"/> -->
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="xls_chilavu_summary.php?<?php echo $v_from; ?>">Print to Excel</a>
+                </label>
+              
+                </td></form>
             </tr>       
             </table>
             </td>
