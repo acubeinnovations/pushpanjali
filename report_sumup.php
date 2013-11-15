@@ -215,6 +215,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 </script>
 <link href="calendar/calendar.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="calendar/calendar.js"></script>
+
 <script >
 function printxl(){
 
@@ -222,6 +223,7 @@ function printxl(){
 
 }
 </script>
+
 <style type="text/css">
 <!--
 .style8 {font-size: 14px}
@@ -293,9 +295,11 @@ function printxl(){
               </label>            </td>
            
             <td height="50" align="center" valign="middle" bgcolor="#FFFFFF">
+
               <!--<label><input type="button" class="style1" onClick="window.print();"  value="Print"/></label>-->
                 	<!--<input type="submit" name="excel" id="excel" value="Print to Excel" />-->
                     <a href="xls_report_sumup.php">Print to Excel</a></td>
+
             </tr>       
  </form>
             </table>

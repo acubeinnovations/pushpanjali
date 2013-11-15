@@ -70,11 +70,13 @@ if (isset($_GET["excel"]) ){
 	
 }
 
+
 $v_amt=array();
 ?>
 
 
 <table width="833" border="0" align="right" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
+
           <tr>
             <td width="54" height="30" class="style1" style="border-bottom:1px solid #999999;">No</td>
             <td width="100" height="30" style="border-bottom:1px solid #999999;"><span class="style1"><strong>Date</strong></span></td>
@@ -92,6 +94,7 @@ $v_amt=array();
               <td width="200" height="30" style="border-bottom:1px solid #999999;"><span class="style1"><?php echo $row_r_view_voucher['name']; ?></span></td>
               <td width="300" height="30" style="border-bottom:1px solid #999999;"><span class="style1">
 			  <?php $v_vou=$row_r_view_voucher['purpose']; include('vou_head.php'); ?></span></td>
+
               <td width="90" height="30" style="border-bottom:1px solid #999999;"><span class="style1">
 			  <?php if($row_r_view_voucher['status']==1) { echo $row_r_view_voucher['amount']; } else {?>
 			  <?php  $v_amt[]=$row_r_view_voucher['amount']; echo $row_r_view_voucher['amount']; }?></span></td>
@@ -110,6 +113,7 @@ $v_amt=array();
               Print</a>
               
               </span></td>
+
             </tr> <?php } while ($row_r_view_voucher = mysql_fetch_assoc($r_view_voucher)); ?>
             <tr bgcolor="#F0C6C6">
               <td height="30" >&nbsp;</td>
@@ -194,11 +198,13 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
         	<td align="right"> 
             <table width="850px" border="0" align="right" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
             <td height="50" align="center" valign="middle" bgcolor="#FFFFFF" class="style1">
+
             <form id="form1" name="form1" method="get" action="report_sumup.php">
               <span class="style5">Daily Report as on <?php echo $v_from; ?> &nbsp;&nbsp;&nbsp;</span>      
               <!--<label><input type="button" class="style1" onClick="window.print();"  value="Print"/> </label>
 				<input type="submit" name="excel" id="excel" value="Print to Excel" />-->
                 <a href="xls_chilavu.php?<?php echo $v_from; ?>">Print to Excel</a>
+
 				<input type="hidden" name="from_date" value="2013-11-05" /> 
 				<input type="hidden" name="to_date" value="2013-11-05" /> 
 				</form>

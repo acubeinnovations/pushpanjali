@@ -140,6 +140,7 @@ function printxl(){
               <td height="50" colspan="6" align="center" valign="middle" style="border-bottom:1px solid #999999;">വരവ്  :  <?php echo date("d/m/Y",strtotime($v_from))." to ".date("d/m/Y",strtotime($v_to)); ?><span id="divnoprint" >
               <!--<label><input type="button" class="style1" onclick="window.print();"  value="Print"/> -->
              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="xls_varavu_summary.php?<?php echo $v_from; ?>">Print to Excel</a>
+
                 </label>
               </td>
               </tr>

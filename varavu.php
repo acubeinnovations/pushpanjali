@@ -64,7 +64,9 @@ if (isset($_GET["excel"]) ){
 	header("Pragma: public"); 
 	
 }
+
 $v_amts=array();
+
 ?>
       <?php if ($totalRows_r_report > 0) { // Show if recordset not empty ?>
              <table width="838" border="0" align="right" cellpadding="0" cellspacing="0" style="border:1px solid #999999;">
@@ -74,12 +76,15 @@ $v_amts=array();
                 <td width="150" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Pooja</span></strong></td>
                 <td width="200" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Star</span></strong></td>
                 <td width="100" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong><span class="style1">Amount</span></strong></td>
+
                 <td width="75" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;">&nbsp;</td>
                 <td width="75" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;">&nbsp;</td>
+
                 <td width="75" height="30" align="left" valign="middle" style="border-bottom:1px solid #999999;"><strong>Print</strong></td>
                 </tr>
                <?php do { ?>
                  <tr class="style1">
+
                    <td width="50" align="centre" valign="middle"><?php echo $row_r_report['receipt_number']; ?>  </td>
                    <td width="200" height="30" align="left" valign="middle">&nbsp;&nbsp;<?php echo $row_r_report['name']; ?></td>
                    <td width="200" height="30" align="left" valign="middle"><?php $v_pooja_id=$row_r_report['pooja'];
@@ -92,17 +97,20 @@ $v_amts=array();
                     <?php if($row_r_report['status']==1) { echo "Cancelled";} else { ?>
                    <a href="delete_report.php?id=<?php echo $row_r_report['id']; ?>"><img src="images/delete.png" width="20" border="0" /></a><?php }?></td>
                    <td width="75" align="left" valign="middle" onClick="MM_openBrWindow('print_vazhipadu.php?receipt_number=<?php echo $row_r_report['receipt_number']; ?>','','width=600,height=400')" ><a href="#">Print</a></td>
+
                    </tr><?php } while ($row_r_report = mysql_fetch_assoc($r_report)); ?>
                  <tr class="style1">
                    <td align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
                    <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;&nbsp;<strong>Total</strong></td>
                    <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
                    <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
+
                    <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;"><strong>
 				 
 				   <?php echo array_sum($v_amts); ?>
                   
                    &nbsp;</strong></td>
+
                    <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
                    <td height="30" align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
                    <td align="left" valign="middle" bgcolor="#C2F29F" style="border-top:1px solid #999999;">&nbsp;</td>
@@ -188,6 +196,7 @@ function printxl(){
           </form>
             <td height="50" align="center" valign="middle" bgcolor="#FFFFFF" class="style1">
             <form id="form1" name="form1" method="get" action="varavu.php">	
+
               <span class="style5">Daily Report on <?php echo $v_date; ?></span>&nbsp;&nbsp;&nbsp;&nbsp;
               <!--<label>
                 <input type="button" class="style1" onClick="window.print();"  value="Print"/>
@@ -195,6 +204,7 @@ function printxl(){
 				<!--<input type="submit" name="excel" id="excel" value="Print to Excel" />-->
 				<input type="hidden" name="date" value="<?php echo $v_date; ?>" /> 
                 <a href="xls_varavu.php">Print to Excel</a>
+
 				</form>
 
                 </td>

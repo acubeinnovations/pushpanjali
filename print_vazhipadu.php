@@ -1,7 +1,9 @@
 <?php  header('Content-type: text/html; charset=utf-8');
  require_once('Connections/pushpanjali.php'); 
 $receipt_number = $_GET["receipt_number"] ;
+
 $strsql = "select * from vazhipadu V, pooja P, star S WHERE V.pooja = P.id and V.star=S.id and V.receipt_number ='".$receipt_number."'";
+
 mysql_query("SET NAMES utf8");
 mysql_select_db($database_pushpanjali, $pushpanjali);
 $rs_pooja = mysql_query($strsql, $pushpanjali) or die(mysql_error());
@@ -62,7 +64,9 @@ line-height:20px;
 <?php do { ?>
     <tr>
     <td width="275" height="15" align="left" valign="middle" class="letter"><?php echo $row_pooja["name"];?></td>
+
     <td width="125" height="15" align="left" valign="middle" class="letter"><?php  echo $row_pooja["starname"]; ?> </td>
+
     <td width="100" height="15" align="middle" valign="middle" class="english"><?php  echo $row_pooja["amount"];  ?></td>
   </tr>
 <?php 
