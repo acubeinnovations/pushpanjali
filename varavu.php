@@ -203,7 +203,7 @@ function printxl(){
                 </label>-->      
 				<!--<input type="submit" name="excel" id="excel" value="Print to Excel" />-->
 				<input type="hidden" name="date" value="<?php echo $v_date; ?>" /> 
-                <a href="xls_varavu.php">Print to Excel</a>
+                <a href="xls_varavu.php?date=<?php echo $_GET["date"]; ?>">Print to Excel</a>
 
 				</form>
 
