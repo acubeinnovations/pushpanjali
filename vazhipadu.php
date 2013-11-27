@@ -591,8 +591,17 @@ line-height:20px;
     <td width="400"  colspan="2" height="65" align="left" valign="middle" class="letter"> &nbsp;&nbsp;&nbsp;
   <?php if (isset($_REQUEST['pooja'])) {$v_pooja_id=$_REQUEST['pooja'];include('inc_pooja.php');  echo $v_pooja_name; } ?>        </td>
     
-    <td width="100" height="65" class="english" align="left" valign="middle"><?php if (isset($_REQUEST['pooja'])) {echo echotomysql($_POST['date']);}?>
-  </br></br><?php echo $v_receipt_no; ?></td>
+    <td width="100" height="65" class="english" align="left" valign="middle"><?php 
+$print_date = "";
+if ($v_book_date != NULL) {
+    $print_date = echotomysql($v_book_date);
+}else{
+    $print_date =  echotomysql($_POST['date']);
+} 
+
+echo $print_date;
+
+?></br></br><?php echo $v_receipt_no; ?></td>
   </tr>
   <tr>
     <td height="120" colspan="3" align="left" valign="top">
